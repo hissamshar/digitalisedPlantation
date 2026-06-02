@@ -25,6 +25,7 @@ const LiveDashboard = () => {
 
   return (
     <div className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-white/20 bg-gray-50 transform hover:-translate-y-2 transition-transform duration-500 perspective-1000 group">
+      {/* ... previous LiveDashboard content ... */}
       
       {/* Browser Window Header */}
       <div className="flex items-center px-4 py-3 bg-gray-100 border-b border-gray-200/80 backdrop-blur-md">
@@ -151,6 +152,87 @@ const LiveDashboard = () => {
           </div>
         </div>
 
+      </div>
+  );
+};
+
+const LiveAnalyticsCard = () => {
+  const [barHeights, setBarHeights] = useState([35, 55, 75, 100]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBarHeights(prev => [
+        Math.max(30, Math.min(45, prev[0] + (Math.random() - 0.5) * 5)),
+        Math.max(50, Math.min(65, prev[1] + (Math.random() - 0.5) * 5)),
+        Math.max(70, Math.min(85, prev[2] + (Math.random() - 0.5) * 5)),
+        Math.max(95, Math.min(100, prev[3] + (Math.random() - 0.5) * 2)),
+      ]);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full max-w-md lg:max-w-lg bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] border border-gray-100 p-8 transform hover:-translate-y-2 transition-all duration-500 group relative z-10">
+      {/* Decorative background glow */}
+      <div className="absolute -inset-4 bg-gradient-to-tr from-success-100 to-primary-100 opacity-0 group-hover:opacity-60 blur-xl transition-opacity duration-500 -z-10 rounded-3xl"></div>
+      
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h4 className="text-gray-900 font-bold tracking-tight text-lg">Yield Projection</h4>
+          <p className="text-sm text-gray-500 font-medium">Alpha-1 vs Traditional</p>
+        </div>
+        <div className="bg-success-50 text-success-600 px-3 py-1.5 rounded-md text-sm font-extrabold border border-success-200 shadow-sm flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          +60%
+        </div>
+      </div>
+      
+      {/* Mock Chart Area */}
+      <div className="relative h-48 w-full flex items-end justify-between gap-4 border-b-2 border-gray-100 pb-2 mb-8">
+        {/* Grid lines */}
+        <div className="absolute top-0 w-full border-t border-dashed border-gray-200"></div>
+        <div className="absolute top-1/3 w-full border-t border-dashed border-gray-200"></div>
+        <div className="absolute top-2/3 w-full border-t border-dashed border-gray-200"></div>
+        
+        {/* Bars */}
+        <div className="w-1/4 bg-gray-300 rounded-t-md transition-all duration-700 ease-in-out relative z-10" style={{ height: `${barHeights[0]}%` }}>
+          <span className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-400">Q1</span>
+        </div>
+        <div className="w-1/4 bg-success-300 rounded-t-md transition-all duration-700 ease-in-out relative z-10" style={{ height: `${barHeights[1]}%` }}>
+          <span className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-400">Q2</span>
+        </div>
+        <div className="w-1/4 bg-success-400 rounded-t-md transition-all duration-700 ease-in-out relative z-10" style={{ height: `${barHeights[2]}%` }}>
+          <span className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-400">Q3</span>
+        </div>
+        <div className="w-1/4 bg-primary-500 rounded-t-md shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-all duration-700 ease-in-out relative z-10" style={{ height: `${barHeights[3]}%` }}>
+          <span className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-900">Q4</span>
+          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-900 text-white text-[10px] font-bold py-1.5 px-2.5 rounded-lg whitespace-nowrap shadow-lg">
+            Peak Yield
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-gray-900"></div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Legend / Metrics */}
+      <div className="grid grid-cols-2 gap-4 pt-2">
+        <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/></svg>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Water Saved</p>
+            <p className="text-base font-extrabold text-gray-900">50%</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="w-10 h-10 rounded-full bg-warning-100 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-warning-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Growth Rate</p>
+            <p className="text-base font-extrabold text-gray-900">1.5x Faster</p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -702,68 +784,7 @@ function App() {
           </ul>
         </div>
         <div className="w-full md:w-1/2 bg-white p-10 lg:p-16 flex items-center justify-center relative overflow-hidden">
-          {/* 3D Floating Analytics Card Mockup */}
-          <div className="w-full max-w-sm bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] border border-gray-100 p-6 transform hover:-translate-y-2 transition-all duration-500 group relative z-10">
-            {/* Decorative background glow */}
-            <div className="absolute -inset-4 bg-gradient-to-tr from-success-100 to-primary-100 opacity-0 group-hover:opacity-60 blur-xl transition-opacity duration-500 -z-10 rounded-3xl"></div>
-            
-            <div className="flex justify-between items-center mb-8">
-              <div>
-                <h4 className="text-gray-900 font-bold tracking-tight">Yield Projection</h4>
-                <p className="text-xs text-gray-500 font-medium">Alpha-1 vs Traditional</p>
-              </div>
-              <div className="bg-success-50 text-success-600 px-2.5 py-1 rounded-md text-xs font-extrabold border border-success-200 shadow-sm">
-                +60%
-              </div>
-            </div>
-            
-            {/* Mock Chart Area */}
-            <div className="relative h-40 w-full flex items-end justify-between gap-3 border-b-2 border-gray-100 pb-2 mb-6">
-              {/* Grid lines */}
-              <div className="absolute top-0 w-full border-t border-dashed border-gray-100"></div>
-              <div className="absolute top-1/2 w-full border-t border-dashed border-gray-100"></div>
-              
-              {/* Bars */}
-              <div className="w-1/4 bg-gray-200 rounded-t-md h-[40%] group-hover:h-[45%] transition-all duration-700 relative z-10">
-                <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] font-bold text-gray-400">Q1</span>
-              </div>
-              <div className="w-1/4 bg-success-200 rounded-t-md h-[60%] group-hover:h-[65%] transition-all duration-700 delay-75 relative z-10">
-                <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] font-bold text-gray-400">Q2</span>
-              </div>
-              <div className="w-1/4 bg-success-400 rounded-t-md h-[80%] group-hover:h-[85%] transition-all duration-700 delay-150 relative z-10">
-                <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] font-bold text-gray-400">Q3</span>
-              </div>
-              <div className="w-1/4 bg-primary-500 rounded-t-md h-[100%] shadow-[0_0_15px_rgba(34,197,94,0.4)] relative z-10">
-                <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-[10px] font-bold text-gray-900">Q4</span>
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 -translate-y-full bg-gray-900 text-white text-[10px] font-bold py-1.5 px-2.5 rounded-lg whitespace-nowrap shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Peak Yield
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-gray-900"></div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Legend / Metrics */}
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              <div className="flex items-center gap-3 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/></svg>
-                </div>
-                <div>
-                  <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Water Saved</p>
-                  <p className="text-sm font-extrabold text-gray-900">50%</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
-                <div className="w-8 h-8 rounded-full bg-warning-100 flex items-center justify-center shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-warning-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                </div>
-                <div>
-                  <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Growth Rate</p>
-                  <p className="text-sm font-extrabold text-gray-900">1.5x</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <LiveAnalyticsCard />
         </div>
       </section>
 
