@@ -458,7 +458,7 @@ function App() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <button className="w-full sm:w-auto bg-white text-primary-500 px-6 py-3 rounded font-bold hover:bg-gray-50 transition-colors text-center">
-                Start for free
+                Invest With Us
               </button>
               <button className="w-full sm:w-auto border border-white text-white px-6 py-3 rounded font-bold hover:bg-white/10 transition-colors text-center">
                 Explore solutions
