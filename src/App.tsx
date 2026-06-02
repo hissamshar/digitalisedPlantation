@@ -159,8 +159,7 @@ function App() {
   return (
     <div 
       ref={mainRef}
-      className="min-h-screen bg-white text-dark-800 font-sans mx-auto shadow-2xl relative overflow-hidden" 
-      style={{ maxWidth: 'calc(100vh * (16/9))' }}
+      className="min-h-screen bg-white text-dark-800 font-sans relative overflow-hidden" 
     >
       {/* 1. Navbar */}
       <nav className="w-full bg-white border-b border-gray-100 relative z-50">
