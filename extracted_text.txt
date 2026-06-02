@@ -1,0 +1,287 @@
+Digitalized Plantation
+Digitalized Plantation
+Home
+Project
+Team
+Invest
+Contact
+Founder
+Join Our Team
+Home
+Project
+Team
+Invest
+Contact
+Founder
+System Online — Incubated at NIC
+The Future of
+Smart Agriculture
+Automating plant growth through intelligent IoT systems — a scalable solution for food security, sustainability, and the future of farming.
+Explore Project
+Invest With Us
+0
+Germination Rate %
+0
+Students Trained
+0
+Sensors Active
+GROWTH CHAMBER — UNIT 01
+🌿
+🌡 24.3 C
+💧 67% RH
+🌱 Soil 72%
+Explore
+What We Do
+Everything you need to know about Digitalized Plantation — from the core technology to the team behind it.
+🔬
+The Project
+Learn how our IoT-powered germination chambers work, the technology stack, and the results we have achieved.
+View Project →
+👥
+Our Team
+Meet the founders, developers, researchers, and marketers building the future of smart agriculture.
+Meet the Team →
+💰
+Partner With Us
+Invest in our AgriTech startup or get a custom smart chamber built for your home, office, or farm.
+Explore Opportunities →
+The Project
+What is Digitalized Plantation
+A smart agriculture system using IoT hardware and embedded intelligence to automate plant growth inside controlled environments — monitoring and adjusting everything so plants thrive without manual intervention.
+Now Incubated at NIC — National Incubation Center
+The project bridges traditional farming and modern technology, creating an automated data-driven ecosystem that is repeatable and scalable.
+Left: IoT Monitored Chamber — Right: Unmonitored Control
+Working Prototype
+Built. Tested. Proven.
+The left chamber is fully IoT-monitored — the right is unmonitored as a control. The growth difference is clearly visible.
+Left — IoT Active (Sensors, UV, Pump)
+Right — Unmonitored Control
+Monitored — Taller, denser growth
+Unmonitored — Natural ambient only
+Founder presenting at innovation showcase
+Core Capabilities
+System Features
+An intelligent closed-loop ecosystem that monitors, decides, and acts — autonomously.
+📡
+Smart Monitoring
+Multi-sensor arrays track all environmental parameters in real time.
+💧
+Automated Irrigation
+Precision pumps trigger only when soil moisture drops below threshold.
+🔆
+UV Light Control
+Automated grow-light cycles calibrated per growth stage.
+🌡
+Climate Regulation
+Fans and heating elements maintain the ideal microclimate automatically.
+🔗
+IoT Connectivity
+ESP32 WiFi enables remote monitoring and over-the-air updates.
+🔔
+Alert System
+Instant alerts when any parameter deviates from safe thresholds.
+Process Flow
+How It Works
+01
+Sensors Collect Data
+DHT11, soil moisture, LDR and temperature sensors sample continuously.
+02
+Microcontroller Processes
+ESP32 and Arduino ingest readings and compare against optimal thresholds.
+03
+Decision Logic Fires
+Embedded logic evaluates parameters and queues corrective actions.
+04
+Actuators Activate
+Relay modules switch on pumps, UV lights, or fans as needed.
+05
+Optimized Growth
+A perfectly regulated environment achieving 90%+ germination success.
+DHT11 Sensor
+→
+Arduino Uno
+Soil Sensor
+→
+ESP32 WiFi
+LDR Light
+→
+Decision Logic
+↓
+Water Pump
+←
+Relay Module
+UV Lights
+←
+Relay Module
+Fan Control
+←
+Relay Module
+Optimized Growth Environment
+Under The Hood
+Technology Stack
+⚡
+ESP32
+WiFi IoT microcontroller
+🔧
+Arduino Uno
+Primary sensor control
+🌡
+DHT11 Sensor
+Temp and humidity
+💧
+Soil Moisture
+Water content detection
+🔌
+Relay Modules
+High-current switching
+🚿
+Water Pump
+Precision irrigation
+🔆
+UV Grow Lights
+Full-spectrum auto
+🐍
+Python and Flask
+Backend and dashboard
+Live System
+Live Dashboard
+Real-time environmental monitoring.
+Digitalized Plantation — Control Panel v2.1
+Temperature
+24.3C
+Optimal 20–28C — Fan Idle
+Humidity
+67%
+Optimal 60–80% — Stable
+Soil Moisture
+72%
+Pump Idle — Next 2h
+Light Intensity
+850 lx
+UV Lights Active
+All Systems Nominal — ACTIVE
+Last sync 2s ago
+The People
+Meet Our Team
+A multidisciplinary team of builders, researchers, and innovators working together to bring smart agriculture to life — incubated at NIC.
+Founder and CEO
+Safi Ullah
+Founder and CEO — IoT Systems Architect
+CS student at IMSciences and Founder of Digitalized Plantation. Designed and built the IoT germination chamber achieving 90% success. Trained 200+ students on climate and digital solutions. Startup now incubated at NIC.
+ESP32 and Arduino
+Python
+Flask
+IoT Systems
+UI/UX Design
+📞 WhatsApp
+🔗 LinkedIn
+📸 Instagram
+Tech Lead
+Ronit Chowhan
+Tech Lead — Product Developer
+Leading product development and building the core IoT architecture. Responsible for turning the vision into working technology.
+Hardware Dev
+IoT Protocols
+Product Build
+AI Engineer
+Ahmad Ullah
+AI Student — AI Implementation
+AI student contributing intelligent automation and machine learning capabilities to the smart agriculture system.
+Machine Learning
+Python
+AI Integration
+Research Lead
+Bisma Sami
+Software Engineering Student — Research and Development
+Leading market research and contributing to strategic planning. Future focus on software development for the platform.
+Market Research
+Software Engineering
+Strategy
+Marketing
+Fahad Nasar
+CS Student — Marketing Lead
+Driving the marketing strategy and brand awareness for Digitalized Plantation. CS background brings a tech-forward approach to growth.
+Digital Marketing
+Brand Strategy
+CS
+Join Us
+We Are Hiring
+Looking for Arduino/ESP32 developers and Agriculture Researchers. Real hardware, real impact.
+💬 Apply via WhatsApp
+Opportunities
+Partner With Us
+Whether you want to invest in the future of AgriTech or bring smart farming to your own space — we want to hear from you.
+💰
+Open to Investment
+We are actively seeking investors and incubation partners who believe in the future of smart agriculture. Our prototype is live, results are proven, and our roadmap is clear.
+Proven 90% germination success prototype
+Incubated at NIC — credible and structured
+Scalable IoT system ready for commercialization
+Clear roadmap to indoor farm and SaaS
+Early-stage entry — maximum upside potential
+💬 Discuss Investment on WhatsApp
+🌿
+Digitalize Your Garden
+Want smart automation for your home garden, rooftop farm, or indoor space? We design and build custom IoT-powered growth chambers tailored to your needs.
+Custom indoor growth chambers built for you
+Full sensor integration — temp, humidity, soil
+Automated irrigation and UV lighting
+Remote monitoring from your phone
+Suitable for homes, offices, schools and farms
+💬 Get Your Chamber on WhatsApp
+Get In Touch
+Contact Us
+Have a question, proposal, or just want to say hello? We respond fast.
+Connect With Us
+📞
+03192291320
+📧
+safiu2543@gmail.com
+💬 WhatsApp Chat
+📸 digitalized_plantation
+🔗 safi-ullah-agritech
+Your Name
+Email Address
+Reason for Contact
+General Inquiry
+Investment Interest
+Get a Smart Chamber
+Join the Team
+Media or Press
+Message
+Send via WhatsApp
+Founder and CEO
+The Visionary
+Safi Ullah
+CS student at IMSciences and Founder of Digitalized Plantation — specializing in IoT-based smart systems using Arduino, ESP32, and environmental sensors.
+He developed a controlled germination chamber capable of regulating environmental factors — temperature, humidity, soil moisture, and light intensity. His project achieved 90% germination success in his prototype. He trained 200+ IT and medical students about climate change and digital solutions. Now his startup is incubated at NIC.
+🏢 Incubated at National Incubation Center (NIC)
+ESP32 and Arduino
+Python
+Flask and PostgreSQL
+Java
+HTML and CSS
+UI/UX Design
+IoT Systems
+📞 WhatsApp
+🔗 LinkedIn
+📸 Instagram
+Track Record
+Achievements
+🌱
+90%
+Germination success rate in prototype testing
+🎓
+200+
+IT and medical students trained on climate change
+🏢
+NIC
+Startup incubated at National Incubation Center
+🚀
+PYLI
+WASH Youth-Led Action Program participant
+Digitalized Plantation
+2026 Digitalized Plantation — Incubated at NIC — All rights reserved.
+LinkedIn
+Instagram
+WhatsApp
