@@ -235,24 +235,109 @@ function App() {
           
           <div className="relative flex justify-center lg:justify-end hero-card">
             {/* Flat Illustration matching the reference */}
-            <div className="w-full max-w-[450px] h-[300px] md:h-[350px] bg-white rounded-xl shadow-2xl relative p-6 flex flex-col gap-4">
-              <div className="flex gap-2 border-b border-gray-100 pb-4">
-                <div className="w-12 h-12 bg-gray-100 rounded-full"></div>
-                <div className="flex-1">
-                  <div className="w-3/4 h-3 bg-gray-200 rounded-full mb-2"></div>
-                  <div className="w-1/2 h-3 bg-gray-100 rounded-full"></div>
-                </div>
-              </div>
-              <div className="flex-1 flex gap-4">
-                <div className="flex-1 bg-gray-100 rounded-lg"></div>
-                <div className="w-[200px] bg-dark-900 rounded-lg relative overflow-hidden">
-                  <div className="absolute top-4 right-4 w-6 h-6 bg-success-500 rounded-sm"></div>
-                </div>
-              </div>
+            <div className="w-full bg-gray-100 p-6 md:p-8 rounded-lg border-4 border-gray-900 shadow-none">
               
-              {/* Overlapping circles */}
-              <div className="absolute -top-6 -right-6 w-20 h-20 bg-warning-500 rounded-full"></div>
-              <div className="absolute -bottom-8 left-12 w-16 h-16 bg-success-500 rounded-full"></div>
+              {/* Dashboard Header Layout */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6 border-b-4 border-gray-900">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-100 px-2.5 py-1 rounded-md">
+                    Live IoT Telemetry
+                  </span>
+                  <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight mt-2">
+                    Smart Chamber Alpha-1
+                  </h3>
+                </div>
+                {/* System Active Badge */}
+                <div className="flex items-center gap-2 bg-emerald-500 text-white px-4 py-2 rounded-md font-semibold text-sm tracking-wide uppercase">
+                  <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
+                  AI Automation Active
+                </div>
+              </div>
+
+              {/* 3-Column Real-Time Metrics Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                
+                {/* Metric 1: Soil Moisture */}
+                <div className="group bg-white p-6 rounded-lg transition-all duration-200 hover:scale-[1.02] shadow-none flex flex-col justify-between h-40">
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm font-bold uppercase tracking-wider text-gray-500">Soil Moisture</span>
+                    <div className="w-10 h-10 bg-blue-500 rounded-md flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/></svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-4xl font-extrabold text-gray-900 tracking-tight">64.5%</div>
+                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-wide mt-1">● Optimal Range</p>
+                  </div>
+                </div>
+
+                {/* Metric 2: Climate & Heat Control */}
+                <div className="group bg-white p-6 rounded-lg transition-all duration-200 hover:scale-[1.02] shadow-none flex flex-col justify-between h-40">
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm font-bold uppercase tracking-wider text-gray-500">Chamber Temp</span>
+                    <div className="w-10 h-10 bg-amber-500 rounded-md flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-4xl font-extrabold text-gray-900 tracking-tight">24.2°C</div>
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mt-1">Humidity: 58%</p>
+                  </div>
+                </div>
+
+                {/* Metric 3: AI Carbon Sequestration Counter */}
+                <div className="group bg-emerald-500 p-6 rounded-lg transition-all duration-200 hover:scale-[1.02] shadow-none flex flex-col justify-between h-40">
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm font-bold uppercase tracking-wider text-emerald-100">CO₂ Sequestered</span>
+                    <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m12 8-4 4h8z"/></svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-4xl font-extrabold text-white tracking-tight">142.8 kg</div>
+                    <p className="text-xs font-bold text-emerald-900 uppercase tracking-wide mt-1">Net Positive Climate Impact</p>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Real-time Actuator Controls (Directly showing IoT hardware relays) */}
+              <div className="bg-white p-6 rounded-lg border-2 border-gray-200 shadow-none">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
+                  Active Hardware Relays
+                </h4>
+                <div className="flex flex-wrap gap-4">
+                  
+                  {/* Irrigation Pump Relay Block */}
+                  <div className="flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-md border border-gray-300 flex-1 min-w-[140px]">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
+                      <p className="text-sm font-extrabold text-gray-900">RUNNING (Auto)</p>
+                    </div>
+                  </div>
+
+                  {/* Ventilation Fan Relay Block */}
+                  <div className="flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-md border border-gray-300 flex-1 min-w-[140px]">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
+                      <p className="text-sm font-extrabold text-gray-900">ON (Optimizing)</p>
+                    </div>
+                  </div>
+
+                  {/* Growth Light Relay Block */}
+                  <div className="flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-md border border-gray-300 flex-1 min-w-[140px]">
+                    <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Photosynthesis Light</p>
+                      <p className="text-sm font-extrabold text-gray-900">NIGHT CYCLE</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
