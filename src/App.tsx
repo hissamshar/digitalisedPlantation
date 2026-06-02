@@ -5,6 +5,157 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const LiveDashboard = () => {
+  const [soilMoisture, setSoilMoisture] = useState(64.5);
+  const [chamberTemp, setChamberTemp] = useState(24.2);
+  const [co2Sequestered, setCo2Sequestered] = useState(142.8);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Fluctuate soil moisture slightly
+      setSoilMoisture(prev => Number((prev + (Math.random() - 0.5) * 1.5).toFixed(1)));
+      // Fluctuate temperature very slightly
+      setChamberTemp(prev => Number((prev + (Math.random() - 0.5) * 0.4).toFixed(1)));
+      // CO2 only goes up
+      setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-white/20 bg-gray-50 transform hover:-translate-y-2 transition-transform duration-500 perspective-1000 group">
+      
+      {/* Browser Window Header */}
+      <div className="flex items-center px-4 py-3 bg-gray-100 border-b border-gray-200/80 backdrop-blur-md">
+        <div className="flex space-x-2">
+          <div className="w-3 h-3 rounded-full bg-red-400 shadow-inner"></div>
+          <div className="w-3 h-3 rounded-full bg-amber-400 shadow-inner"></div>
+          <div className="w-3 h-3 rounded-full bg-green-400 shadow-inner"></div>
+        </div>
+        <div className="mx-auto flex-1 max-w-[200px] sm:max-w-xs flex justify-center ml-4 sm:ml-auto">
+          <div className="bg-white text-gray-400 text-[10px] font-medium px-3 py-1 rounded-md border border-gray-200/80 shadow-sm w-full text-center truncate flex items-center justify-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            app.digitalisedplantation.com
+          </div>
+        </div>
+      </div>
+
+      {/* The Dashboard Content (Inside the "Screen") */}
+      <div className="w-full bg-white/90 p-5 md:p-7 relative overflow-hidden">
+        {/* Subtle 3D Shine */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-20"></div>
+        
+        {/* Dashboard Header Layout */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-5 border-b border-gray-200/60 relative z-10">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-2.5 py-1 rounded-full shadow-sm border border-primary-100/50">
+              Live IoT Telemetry
+            </span>
+            <h3 className="text-xl font-extrabold text-gray-900 tracking-tight mt-2 drop-shadow-sm">
+              Smart Chamber Alpha-1
+            </h3>
+          </div>
+          {/* System Active Badge */}
+          <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white px-3 py-1.5 rounded-full font-semibold text-xs tracking-wide shadow-md shadow-emerald-500/20 border border-emerald-400/50">
+            <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
+            <span className="relative z-10">AI Automation</span>
+          </div>
+        </div>
+
+        {/* 3-Column Real-Time Metrics Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 relative z-10">
+          
+          {/* Metric 1: Soil Moisture */}
+          <div className="bg-white p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-gray-100 flex flex-col justify-between h-32 relative overflow-hidden">
+            <div className="flex justify-between items-start">
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Soil Moisture</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/></svg>
+              </div>
+            </div>
+            <div>
+              <div className="text-3xl font-extrabold text-gray-900 tracking-tight transition-all duration-300">{soilMoisture}%</div>
+              <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 bg-emerald-500 rounded-full inline-block"></span> Optimal
+              </p>
+            </div>
+          </div>
+
+          {/* Metric 2: Climate & Heat Control */}
+          <div className="bg-white p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-gray-100 flex flex-col justify-between h-32 relative overflow-hidden">
+            <div className="flex justify-between items-start">
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Chamber Temp</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center shadow-md shadow-amber-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+              </div>
+            </div>
+            <div>
+              <div className="text-3xl font-extrabold text-gray-900 tracking-tight transition-all duration-300">{chamberTemp}°C</div>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mt-1">Humidity: 58%</p>
+            </div>
+          </div>
+
+          {/* Metric 3: AI Carbon Sequestration Counter */}
+          <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-emerald-400 flex flex-col justify-between h-32 relative overflow-hidden">
+            <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+            <div className="flex justify-between items-start relative z-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-100 drop-shadow-sm">CO₂ Captured</span>
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/30 shadow-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m12 8-4 4h8z"/></svg>
+              </div>
+            </div>
+            <div className="relative z-10">
+              <div className="text-3xl font-extrabold text-white tracking-tight drop-shadow-sm transition-all duration-300">{co2Sequestered} kg</div>
+              <p className="text-[10px] font-bold text-emerald-100 uppercase tracking-wide mt-1 drop-shadow-sm">Net Positive</p>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Real-time Actuator Controls */}
+        <div className="bg-gradient-to-b from-gray-50 to-gray-100/50 p-4 rounded-xl border border-gray-200/80 shadow-inner relative z-10">
+          <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full shadow-sm"></span>
+            Active Hardware Relays
+          </h4>
+          <div className="flex flex-wrap gap-2.5">
+            
+            {/* Irrigation Pump Relay Block */}
+            <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] hover:shadow-md transition-shadow">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
+                <p className="text-xs font-extrabold text-gray-800">RUNNING</p>
+              </div>
+            </div>
+
+            {/* Ventilation Fan Relay Block */}
+            <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] hover:shadow-md transition-shadow">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
+                <p className="text-xs font-extrabold text-gray-800">ON (Auto)</p>
+              </div>
+            </div>
+
+            {/* Growth Light Relay Block */}
+            <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] opacity-75">
+              <div className="w-2 h-2 rounded-full bg-amber-500/40"></div>
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Growth Light</p>
+                <p className="text-xs font-extrabold text-gray-500">NIGHT</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -234,136 +385,7 @@ function App() {
           </div>
           
           <div className="relative flex justify-center lg:justify-end hero-card">
-            {/* SaaS Browser Screen Mockup wrapping the Dashboard */}
-            <div className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-white/20 bg-gray-50 transform hover:-translate-y-2 transition-transform duration-500 perspective-1000 group">
-              
-              {/* Browser Window Header */}
-              <div className="flex items-center px-4 py-3 bg-gray-100 border-b border-gray-200/80 backdrop-blur-md">
-                <div className="flex space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400 shadow-inner"></div>
-                  <div className="w-3 h-3 rounded-full bg-amber-400 shadow-inner"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400 shadow-inner"></div>
-                </div>
-                <div className="mx-auto flex-1 max-w-[200px] sm:max-w-xs flex justify-center ml-4 sm:ml-auto">
-                  <div className="bg-white text-gray-400 text-[10px] font-medium px-3 py-1 rounded-md border border-gray-200/80 shadow-sm w-full text-center truncate flex items-center justify-center gap-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                    app.digitalisedplantation.com
-                  </div>
-                </div>
-              </div>
-
-              {/* The Dashboard Content (Inside the "Screen") */}
-              <div className="w-full bg-white/90 p-5 md:p-7 relative overflow-hidden">
-                {/* Subtle 3D Shine */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-20"></div>
-                
-                {/* Dashboard Header Layout */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-5 border-b border-gray-200/60 relative z-10">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-2.5 py-1 rounded-full shadow-sm border border-primary-100/50">
-                      Live IoT Telemetry
-                    </span>
-                    <h3 className="text-xl font-extrabold text-gray-900 tracking-tight mt-2 drop-shadow-sm">
-                      Smart Chamber Alpha-1
-                    </h3>
-                  </div>
-                  {/* System Active Badge */}
-                  <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white px-3 py-1.5 rounded-full font-semibold text-xs tracking-wide shadow-md shadow-emerald-500/20 border border-emerald-400/50">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
-                    <span className="relative z-10">AI Automation</span>
-                  </div>
-                </div>
-
-                {/* 3-Column Real-Time Metrics Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 relative z-10">
-                  
-                  {/* Metric 1: Soil Moisture */}
-                  <div className="bg-white p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-gray-100 flex flex-col justify-between h-32 relative overflow-hidden">
-                    <div className="flex justify-between items-start">
-                      <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Soil Moisture</span>
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/></svg>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-extrabold text-gray-900 tracking-tight">64.5%</div>
-                      <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide mt-1 flex items-center gap-1">
-                        <span className="w-1 h-1 bg-emerald-500 rounded-full inline-block"></span> Optimal
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Metric 2: Climate & Heat Control */}
-                  <div className="bg-white p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-gray-100 flex flex-col justify-between h-32 relative overflow-hidden">
-                    <div className="flex justify-between items-start">
-                      <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Chamber Temp</span>
-                      <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center shadow-md shadow-amber-500/30">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-extrabold text-gray-900 tracking-tight">24.2°C</div>
-                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mt-1">Humidity: 58%</p>
-                    </div>
-                  </div>
-
-                  {/* Metric 3: AI Carbon Sequestration Counter */}
-                  <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-emerald-400 flex flex-col justify-between h-32 relative overflow-hidden">
-                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-                    <div className="flex justify-between items-start relative z-10">
-                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-100 drop-shadow-sm">CO₂ Captured</span>
-                      <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/30 shadow-inner">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m12 8-4 4h8z"/></svg>
-                      </div>
-                    </div>
-                    <div className="relative z-10">
-                      <div className="text-3xl font-extrabold text-white tracking-tight drop-shadow-sm">142.8 kg</div>
-                      <p className="text-[10px] font-bold text-emerald-100 uppercase tracking-wide mt-1 drop-shadow-sm">Net Positive</p>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Real-time Actuator Controls */}
-                <div className="bg-gradient-to-b from-gray-50 to-gray-100/50 p-4 rounded-xl border border-gray-200/80 shadow-inner relative z-10">
-                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full shadow-sm"></span>
-                    Active Hardware Relays
-                  </h4>
-                  <div className="flex flex-wrap gap-2.5">
-                    
-                    {/* Irrigation Pump Relay Block */}
-                    <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] hover:shadow-md transition-shadow">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
-                      <div>
-                        <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
-                        <p className="text-xs font-extrabold text-gray-800">RUNNING</p>
-                      </div>
-                    </div>
-
-                    {/* Ventilation Fan Relay Block */}
-                    <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] hover:shadow-md transition-shadow">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
-                      <div>
-                        <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
-                        <p className="text-xs font-extrabold text-gray-800">ON (Auto)</p>
-                      </div>
-                    </div>
-
-                    {/* Growth Light Relay Block */}
-                    <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] opacity-75">
-                      <div className="w-2 h-2 rounded-full bg-amber-500/40"></div>
-                      <div>
-                        <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Growth Light</p>
-                        <p className="text-xs font-extrabold text-gray-500">NIGHT</p>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
+            <LiveDashboard />
           </div>
         </div>
       </section>
