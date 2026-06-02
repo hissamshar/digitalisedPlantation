@@ -234,48 +234,52 @@ function App() {
           </div>
           
           <div className="relative flex justify-center lg:justify-end hero-card">
-            {/* Flat Illustration matching the reference */}
-            <div className="w-full bg-gray-100 p-6 md:p-8 rounded-lg border-4 border-gray-900 shadow-none">
+            {/* 3D Professional IoT Dashboard */}
+            <div className="w-full bg-white/90 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-white/40 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] relative overflow-hidden group transform hover:-translate-y-1 transition-all duration-500">
+              {/* Subtle 3D Shine */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
               
               {/* Dashboard Header Layout */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6 border-b-4 border-gray-900">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6 border-b border-gray-200/60 relative z-10">
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-100 px-2.5 py-1 rounded-md">
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-3 py-1.5 rounded-full shadow-sm border border-primary-100/50">
                     Live IoT Telemetry
                   </span>
-                  <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight mt-2">
+                  <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight mt-3 drop-shadow-sm">
                     Smart Chamber Alpha-1
                   </h3>
                 </div>
                 {/* System Active Badge */}
-                <div className="flex items-center gap-2 bg-emerald-500 text-white px-4 py-2 rounded-md font-semibold text-sm tracking-wide uppercase">
-                  <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
-                  AI Automation Active
+                <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white px-4 py-2 rounded-full font-semibold text-sm tracking-wide shadow-lg shadow-emerald-500/30 border border-emerald-400/50">
+                  <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+                  <span className="relative z-10">AI Automation Active</span>
                 </div>
               </div>
 
               {/* 3-Column Real-Time Metrics Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 relative z-10">
                 
                 {/* Metric 1: Soil Moisture */}
-                <div className="group bg-white p-6 rounded-lg transition-all duration-200 hover:scale-[1.02] shadow-none flex flex-col justify-between h-40">
+                <div className="bg-white p-5 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl shadow-md border border-gray-100 flex flex-col justify-between h-40 relative overflow-hidden">
                   <div className="flex justify-between items-start">
                     <span className="text-sm font-bold uppercase tracking-wider text-gray-500">Soil Moisture</span>
-                    <div className="w-10 h-10 bg-blue-500 rounded-md flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/30">
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/></svg>
                     </div>
                   </div>
                   <div>
                     <div className="text-4xl font-extrabold text-gray-900 tracking-tight">64.5%</div>
-                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-wide mt-1">● Optimal Range</p>
+                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-wide mt-1 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Optimal Range
+                    </p>
                   </div>
                 </div>
 
                 {/* Metric 2: Climate & Heat Control */}
-                <div className="group bg-white p-6 rounded-lg transition-all duration-200 hover:scale-[1.02] shadow-none flex flex-col justify-between h-40">
+                <div className="bg-white p-5 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl shadow-md border border-gray-100 flex flex-col justify-between h-40 relative overflow-hidden">
                   <div className="flex justify-between items-start">
                     <span className="text-sm font-bold uppercase tracking-wider text-gray-500">Chamber Temp</span>
-                    <div className="w-10 h-10 bg-amber-500 rounded-md flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                    <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center shadow-lg shadow-amber-500/30">
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
                     </div>
                   </div>
@@ -286,52 +290,54 @@ function App() {
                 </div>
 
                 {/* Metric 3: AI Carbon Sequestration Counter */}
-                <div className="group bg-emerald-500 p-6 rounded-lg transition-all duration-200 hover:scale-[1.02] shadow-none flex flex-col justify-between h-40">
-                  <div className="flex justify-between items-start">
-                    <span className="text-sm font-bold uppercase tracking-wider text-emerald-100">CO₂ Sequestered</span>
-                    <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m12 8-4 4h8z"/></svg>
+                <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-5 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl shadow-md border border-emerald-400 flex flex-col justify-between h-40 relative overflow-hidden">
+                  <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                  <div className="flex justify-between items-start relative z-10">
+                    <span className="text-sm font-bold uppercase tracking-wider text-emerald-100 drop-shadow-sm">CO₂ Sequestered</span>
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/30 shadow-inner">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m12 8-4 4h8z"/></svg>
                     </div>
                   </div>
-                  <div>
-                    <div className="text-4xl font-extrabold text-white tracking-tight">142.8 kg</div>
-                    <p className="text-xs font-bold text-emerald-900 uppercase tracking-wide mt-1">Net Positive Climate Impact</p>
+                  <div className="relative z-10">
+                    <div className="text-4xl font-extrabold text-white tracking-tight drop-shadow-md">142.8 kg</div>
+                    <p className="text-xs font-bold text-emerald-100 uppercase tracking-wide mt-1 drop-shadow-sm">Net Positive Climate Impact</p>
                   </div>
                 </div>
 
               </div>
 
-              {/* Real-time Actuator Controls (Directly showing IoT hardware relays) */}
-              <div className="bg-white p-6 rounded-lg border-2 border-gray-200 shadow-none">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
+              {/* Real-time Actuator Controls */}
+              <div className="bg-gradient-to-b from-gray-50 to-gray-100/50 p-5 rounded-xl border border-gray-200/80 shadow-inner relative z-10">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full shadow-sm"></span>
                   Active Hardware Relays
                 </h4>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3">
                   
                   {/* Irrigation Pump Relay Block */}
-                  <div className="flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-md border border-gray-300 flex-1 min-w-[140px]">
-                    <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                  <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm flex-1 min-w-[140px] hover:shadow-md transition-shadow">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] animate-pulse"></div>
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
-                      <p className="text-sm font-extrabold text-gray-900">RUNNING (Auto)</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
+                      <p className="text-sm font-extrabold text-gray-800">RUNNING (Auto)</p>
                     </div>
                   </div>
 
                   {/* Ventilation Fan Relay Block */}
-                  <div className="flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-md border border-gray-300 flex-1 min-w-[140px]">
-                    <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                  <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm flex-1 min-w-[140px] hover:shadow-md transition-shadow">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] animate-pulse"></div>
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
-                      <p className="text-sm font-extrabold text-gray-900">ON (Optimizing)</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
+                      <p className="text-sm font-extrabold text-gray-800">ON (Optimizing)</p>
                     </div>
                   </div>
 
                   {/* Growth Light Relay Block */}
-                  <div className="flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-md border border-gray-300 flex-1 min-w-[140px]">
-                    <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                  <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-lg border border-gray-200 shadow-sm flex-1 min-w-[140px] opacity-75">
+                    <div className="w-3 h-3 rounded-full bg-amber-500/40"></div>
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Photosynthesis Light</p>
-                      <p className="text-sm font-extrabold text-gray-900">NIGHT CYCLE</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Growth Light</p>
+                      <p className="text-sm font-extrabold text-gray-500">NIGHT CYCLE</p>
                     </div>
                   </div>
 
