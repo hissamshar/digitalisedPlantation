@@ -25,7 +25,6 @@ const LiveDashboard = () => {
 
   return (
     <div className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-white/20 bg-gray-50 transform hover:-translate-y-2 transition-transform duration-500 perspective-1000 group">
-      {/* ... previous LiveDashboard content ... */}
       
       {/* Browser Window Header */}
       <div className="flex items-center px-4 py-3 bg-gray-100 border-b border-gray-200/80 backdrop-blur-md">
@@ -153,6 +152,7 @@ const LiveDashboard = () => {
         </div>
 
       </div>
+    </div>
   );
 };
 
