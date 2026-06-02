@@ -324,10 +324,10 @@ function App() {
       </section>
 
       {/* Spacer for seamless transition into dark section */}
-      <div className="w-full h-32 md:h-48 bg-gradient-to-b from-light-50 to-[#111827]"></div>
+      <div className="w-full h-32 md:h-48 bg-gradient-to-b from-light-50 to-black"></div>
 
       {/* 5. Centered Text */}
-      <section className="big-text-section bg-[#111827] text-white py-4 lg:py-8 text-center px-6">
+      <section className="big-text-section bg-black text-white py-4 lg:py-8 text-center px-6">
         <div className="max-w-3xl mx-auto big-text">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">
             Experience the future of climate-independent farming today.
@@ -339,7 +339,7 @@ function App() {
       </section>
 
       {/* 5b. Hardware Showcase - Video Scrub */}
-      <section ref={showcaseRef} className="relative bg-[#111827] text-white h-[100vh] overflow-hidden">
+      <section ref={showcaseRef} className="relative bg-black text-white h-[100vh] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
           {isVideoLoading && (
             <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -356,7 +356,8 @@ function App() {
             className="absolute inset-0 w-full h-full object-contain"
             style={{ pointerEvents: 'none' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#111827] via-transparent to-[#111827] pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-[5]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-[5]"></div>
           
           {/* Hardware Text Overlays */}
           <div className="absolute inset-0 flex items-center px-8 md:px-24 pointer-events-none">
@@ -421,7 +422,7 @@ function App() {
       </section>
 
       {/* Spacer for seamless transition out of dark section */}
-      <div className="w-full h-32 md:h-48 bg-gradient-to-b from-[#111827] to-light-50"></div>
+      <div className="w-full h-32 md:h-48 bg-gradient-to-b from-black to-light-50"></div>
 
       {/* 6. Features Grid */}
       <section id="features" className="features-section bg-light-50 pb-16 lg:pb-20 pt-8 px-6">
