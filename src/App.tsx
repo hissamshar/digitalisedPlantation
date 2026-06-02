@@ -12,6 +12,34 @@ function App() {
   // Video scrub refs
   const showcaseRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  
+  // Video Blob State for Vercel VOD scrubbing
+  const [videoSrc, setVideoSrc] = useState<string>('');
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
+
+  // Pre-fetch video as a Blob to ensure Vercel edge caching doesn't block byte-range seek requests
+  useEffect(() => {
+    const videoUrl = '/Cinematic_macro_vertical_track_scrub.mp4';
+    fetch(videoUrl)
+      .then(res => res.blob())
+      .then(blob => {
+        const objectUrl = URL.createObjectURL(blob);
+        setVideoSrc(objectUrl);
+        setIsVideoLoading(false);
+      })
+      .catch(err => {
+        console.warn("Blob fetch failed, falling back to direct stream:", err);
+        setVideoSrc(videoUrl);
+        setIsVideoLoading(false);
+      });
+
+    return () => {
+      // Cleanup object URL
+      if (videoSrc && videoSrc.startsWith('blob:')) {
+        URL.revokeObjectURL(videoSrc);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -313,9 +341,14 @@ function App() {
       {/* 5b. Hardware Showcase - Video Scrub */}
       <section ref={showcaseRef} className="relative bg-[#111827] text-white h-[100vh] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
+          {isVideoLoading && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
           <video
             ref={videoRef}
-            src="/Cinematic_macro_vertical_track_scrub.mp4"
+            src={videoSrc || undefined}
             playsInline
             autoPlay={false}
             muted
