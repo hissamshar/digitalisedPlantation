@@ -356,7 +356,7 @@ function App() {
             autoPlay={false}
             muted
             preload="auto"
-            className="absolute inset-0 w-full h-full object-contain"
+            className="absolute inset-0 w-full h-full object-cover"
             style={{ pointerEvents: 'none' }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-[5]"></div>
