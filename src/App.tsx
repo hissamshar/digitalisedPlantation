@@ -359,8 +359,8 @@ function App() {
             className="absolute inset-0 w-full h-full object-cover"
             style={{ pointerEvents: 'none' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-[5] opacity-50"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-[5] opacity-50"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-[5]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-[5]"></div>
           
           {/* Hardware Text Overlays */}
           <div className="absolute inset-0 flex items-center px-8 md:px-24 pointer-events-none z-10">
