@@ -363,7 +363,7 @@ function App() {
           <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-[5]"></div>
           
           {/* Hardware Text Overlays */}
-          <div className="absolute inset-0 flex items-center px-8 md:px-24 pointer-events-none">
+          <div className="absolute inset-0 flex items-center px-8 md:px-24 pointer-events-none z-10">
             
             {/* Text 1 */}
             <div className="hw-text-1 absolute max-w-2xl">
