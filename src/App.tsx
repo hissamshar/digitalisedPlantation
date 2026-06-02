@@ -1,4 +1,4 @@
-import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, ChevronRight, Check, Menu, X, Instagram, Linkedin, Facebook, Youtube, Sprout, Mail } from 'lucide-react';
+import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, Check, Menu, X, Instagram, Linkedin, Facebook, Youtube, Sprout, Mail } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -729,7 +729,6 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
 
   // Video scrub refs
