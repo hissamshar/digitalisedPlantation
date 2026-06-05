@@ -8,3 +8,5 @@ dist/
 .env.production.local
 *.log
 src/*.checkpoint
+# Source master for the showcase clip; the built/served copy is public/showcase.mp4
+/video.mp4

@@ -2,8 +2,26 @@ import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, Check, Menu, X, 
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import VideoScrubber from './VideoScrubber';
+
+// Hyperreal cinematic that scroll drives. Swap this file with your AI/offline
+// render (re-encode all-intra) to change the footage — no code change needed.
+const SCRUB_VIDEO = '/showcase.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Shared contact destination used by sales / contact CTAs across the site.
+const WHATSAPP_URL = 'https://wa.me/923192291320';
+const openWhatsApp = () => window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer');
+
+// Clickable footer entry — keeps every footer item a real, navigable action.
+const FooterLink = ({ label, onClick }: { label: string; onClick: () => void }) => (
+  <li>
+    <button onClick={onClick} className="text-left hover:text-white transition-colors">
+      {label}
+    </button>
+  </li>
+);
 
 const LiveDashboard = () => {
   const [soilMoisture, setSoilMoisture] = useState(64.5);
@@ -263,8 +281,8 @@ const GlobalNav = ({ currentPage, onNavigate }: { currentPage: string, onNavigat
         </div>
         
         <div className="hidden md:flex items-center gap-4 text-sm font-medium">
-          <a href="#" className="hidden md:block hover:text-primary-500">Log in</a>
-          <button className="bg-primary-500 text-white px-5 py-2 rounded font-medium hover:bg-primary-600 transition-colors">
+          <a href="https://app.digitalisedplantation.com" target="_blank" rel="noopener noreferrer" className="hidden md:block hover:text-primary-500">Log in</a>
+          <button onClick={() => handleNav('invest')} className="bg-primary-500 text-white px-5 py-2 rounded font-medium hover:bg-primary-600 transition-colors">
             Get started
           </button>
         </div>
@@ -284,8 +302,8 @@ const GlobalNav = ({ currentPage, onNavigate }: { currentPage: string, onNavigat
           <button onClick={() => handleNav('company')} className={`text-left font-medium ${currentPage === 'company' ? 'text-primary-500' : 'hover:text-primary-500'}`}>Company</button>
           <button onClick={() => handleNav('invest')} className={`text-left font-medium ${currentPage === 'invest' ? 'text-primary-500' : 'hover:text-primary-500'}`}>Invest</button>
           <hr className="border-gray-100 my-2" />
-          <a href="#" className="font-medium hover:text-primary-500">Log in</a>
-          <button className="bg-primary-500 text-white px-5 py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors w-full mt-2">
+          <a href="https://app.digitalisedplantation.com" target="_blank" rel="noopener noreferrer" className="font-medium hover:text-primary-500">Log in</a>
+          <button onClick={() => handleNav('invest')} className="bg-primary-500 text-white px-5 py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors w-full mt-2">
             Get started
           </button>
         </div>
@@ -333,7 +351,7 @@ const InvestPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => {
                 <li className="flex items-start gap-4 text-gray-700"><Check size={20} className="text-success-500 shrink-0 mt-0.5" /> Scalable IoT system ready for commercialization</li>
                 <li className="flex items-start gap-4 text-gray-700"><Check size={20} className="text-success-500 shrink-0 mt-0.5" /> Clear roadmap to indoor farm & SaaS</li>
               </ul>
-              <button className="w-full py-4 bg-primary-500 text-white rounded-xl font-bold hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/20 text-lg">
+              <button onClick={openWhatsApp} className="w-full py-4 bg-primary-500 text-white rounded-xl font-bold hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/20 text-lg">
                 Discuss Investment
               </button>
             </div>
@@ -351,7 +369,7 @@ const InvestPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => {
                 <li className="flex items-start gap-4 text-white"><Check size={20} className="text-success-400 shrink-0 mt-0.5" /> Automated irrigation and UV lighting</li>
                 <li className="flex items-start gap-4 text-white"><Check size={20} className="text-success-400 shrink-0 mt-0.5" /> Remote monitoring from your phone</li>
               </ul>
-              <button className="w-full py-4 bg-white text-primary-600 rounded-xl font-bold hover:bg-gray-100 transition-colors text-lg shadow-lg">
+              <button onClick={openWhatsApp} className="w-full py-4 bg-white text-primary-600 rounded-xl font-bold hover:bg-gray-100 transition-colors text-lg shadow-lg">
                 Get Your Chamber
               </button>
             </div>
@@ -478,7 +496,7 @@ const ProductsPage = ({ onNavigate }: { onNavigate: (page: string) => void }) =>
                 <li className="flex items-center gap-2"><Check size={16} className="text-primary-400" /> Basic sensors</li>
                 <li className="flex items-center gap-2 text-gray-400 line-through"><Check size={16} /> Climate control</li>
               </ul>
-              <button className="w-full py-3 bg-primary-50 text-primary-600 rounded font-bold hover:bg-primary-100 transition-colors">
+              <button onClick={openWhatsApp} className="w-full py-3 bg-primary-50 text-primary-600 rounded font-bold hover:bg-primary-100 transition-colors">
                 Contact Sales
               </button>
             </div>
@@ -497,7 +515,7 @@ const ProductsPage = ({ onNavigate }: { onNavigate: (page: string) => void }) =>
                 <li className="flex items-center gap-2"><Check size={16} className="text-green-300" /> Weather integration</li>
                 <li className="flex items-center gap-2"><Check size={16} className="text-green-300" /> Basic AI analysis</li>
               </ul>
-              <button className="w-full py-3 bg-white text-primary-500 rounded font-bold hover:bg-gray-50 transition-colors">
+              <button onClick={openWhatsApp} className="w-full py-3 bg-white text-primary-500 rounded font-bold hover:bg-gray-50 transition-colors">
                 Select Plan
               </button>
             </div>
@@ -515,7 +533,7 @@ const ProductsPage = ({ onNavigate }: { onNavigate: (page: string) => void }) =>
                 <li className="flex items-center gap-2"><Check size={16} className="text-primary-400" /> Full IoT automation</li>
                 <li className="flex items-center gap-2"><Check size={16} className="text-primary-400" /> Maximum ROI margin</li>
               </ul>
-              <button className="w-full py-3 bg-primary-50 text-primary-600 rounded font-bold hover:bg-primary-100 transition-colors">
+              <button onClick={openWhatsApp} className="w-full py-3 bg-primary-50 text-primary-600 rounded font-bold hover:bg-primary-100 transition-colors">
                 Contact Sales
               </button>
             </div>
@@ -685,7 +703,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
                 <div className="text-success-500 text-xs font-bold uppercase tracking-wider mb-3 inline-block">We Are Hiring</div>
                 <h3 className="font-bold text-2xl mb-4">Join Our Team</h3>
                 <p className="text-sm text-gray-400 mb-6 leading-relaxed">Looking for Arduino/ESP32 developers and Agriculture Researchers. Real hardware, real impact.</p>
-                <button className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-6 rounded-lg transition-colors w-full">
+                <button onClick={openWhatsApp} className="bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-6 rounded-lg transition-colors w-full">
                   Apply via WhatsApp
                 </button>
               </div>
@@ -731,37 +749,10 @@ function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
-  // Video scrub refs
+  // Hardware showcase: pinned section + scroll-driven scrub progress.
   const showcaseRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  
-  // Video Blob State for Vercel VOD scrubbing
-  const [videoSrc, setVideoSrc] = useState<string>('');
-  const [isVideoLoading, setIsVideoLoading] = useState(true);
-
-  // Pre-fetch video as a Blob to ensure Vercel edge caching doesn't block byte-range seek requests
-  useEffect(() => {
-    const videoUrl = '/Cinematic_macro_vertical_track_scrub.mp4';
-    fetch(videoUrl)
-      .then(res => res.blob())
-      .then(blob => {
-        const objectUrl = URL.createObjectURL(blob);
-        setVideoSrc(objectUrl);
-        setIsVideoLoading(false);
-      })
-      .catch(err => {
-        console.warn("Blob fetch failed, falling back to direct stream:", err);
-        setVideoSrc(videoUrl);
-        setIsVideoLoading(false);
-      });
-
-    return () => {
-      // Cleanup object URL
-      if (videoSrc && videoSrc.startsWith('blob:')) {
-        URL.revokeObjectURL(videoSrc);
-      }
-    };
-  }, []);
+  const sceneProgress = useRef(0);                  // 0..1, written by GSAP, read by the scrubber
+  const [sceneActive, setSceneActive] = useState(false); // gates the scrub loop to when visible
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -781,39 +772,29 @@ function App() {
 
       // 4. Big Text Transition (Removed GSAP color tween in favor of CSS gradient spacer)
 
-      // 5. Video Scrub Showcase (Pinned) - Synchronous execution
-      const video = videoRef.current;
-      if (video && showcaseRef.current) {
-        // Ensure video is explicitly paused so scrubbing doesn't fight playback
-        video.pause();
-        
+      // 5. Hardware Showcase (Pinned) — scroll drives the cinematic scrub progress
+      if (showcaseRef.current) {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: showcaseRef.current,
             start: 'top top',
-            end: '+=300%', // Scroll for 3 screens
-            scrub: 1.5,
+            end: '+=250%', // Scroll distance for the full scene
+            scrub: 0.6,
             pin: true,
+            invalidateOnRefresh: true,
+            // Only run the scrub loop while the section is on screen
+            onToggle: (self) => setSceneActive(self.isActive),
           }
         });
 
-        // Scrub video smoothly using a proxy object
+        // Feed normalized scroll progress straight into the 3D scene (no decode/seek lag)
         const proxy = { progress: 0 };
         tl.to(proxy, {
           progress: 1,
-          duration: 1, // Stretch the scrub across the entire 300% scroll distance
+          duration: 1,
           ease: 'none',
           onUpdate: () => {
-            if (video.duration && !isNaN(video.duration)) {
-              try {
-                // Request animation frame for the actual seek to prevent browser lockups
-                requestAnimationFrame(() => {
-                  video.currentTime = proxy.progress * video.duration;
-                });
-              } catch (e) {
-                // Ignore seek errors
-              }
-            }
+            sceneProgress.current = proxy.progress;
           }
         }, 0);
 
@@ -915,7 +896,7 @@ function App() {
               <button onClick={() => setCurrentPage('invest')} className="w-full sm:w-auto bg-white text-primary-500 px-6 py-3 rounded font-bold hover:bg-gray-50 transition-colors text-center">
                 Invest With Us
               </button>
-              <button className="w-full sm:w-auto border border-white text-white px-6 py-3 rounded font-bold hover:bg-white/10 transition-colors text-center">
+              <button onClick={() => setCurrentPage('products')} className="w-full sm:w-auto border border-white text-white px-6 py-3 rounded font-bold hover:bg-white/10 transition-colors text-center">
                 Explore solutions
               </button>
             </div>
@@ -988,8 +969,12 @@ function App() {
         </div>
       </section>
 
-      {/* Spacer for seamless transition into dark section */}
-      <div className="w-full h-32 md:h-48 bg-gradient-to-b from-light-50 to-black"></div>
+      {/* Spacer for seamless transition into dark section: eased 3-stop gradient
+          holds light, then ramps to pure black so there's no muddy grey band */}
+      <div
+        className="w-full h-24 md:h-32"
+        style={{ background: 'linear-gradient(to bottom, #F8FAFC 0%, #c9d2cd 38%, #2b3330 68%, #000000 100%)' }}
+      ></div>
 
       {/* 5. Centered Text */}
       <section className="big-text-section bg-black text-white py-4 lg:py-8 text-center px-6">
@@ -1003,24 +988,11 @@ function App() {
         </div>
       </section>
 
-      {/* 5b. Hardware Showcase - Video Scrub */}
+      {/* 5b. Hardware Showcase - Cinematic Scroll Scrub */}
       <section ref={showcaseRef} className="relative bg-black text-white h-[100vh] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
-          {isVideoLoading && (
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          )}
-          <video
-            ref={videoRef}
-            src={videoSrc || undefined}
-            playsInline
-            autoPlay={false}
-            muted
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ pointerEvents: 'none' }}
-          />
+          {/* Scroll-scrubbed cinematic; progress fed via sceneProgress ref */}
+          <VideoScrubber progress={sceneProgress} active={sceneActive} src={SCRUB_VIDEO} />
           <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-[5]"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-[5]"></div>
           
@@ -1153,7 +1125,7 @@ function App() {
           
           <div className="space-y-4">
             {[
-              { q: 'How does the AI irrigation work?', a: 'Our AI analyzes soil moisture, weather forecasts, and plant types to deliver precisely the right amount of water exactly when needed, reducing water usage by up to 40%.' },
+              { q: 'How does the AI irrigation work?', a: 'Our AI analyzes soil moisture, weather forecasts, and plant types to deliver precisely the right amount of water exactly when needed, reducing water usage by up to 50%.' },
               { q: 'What is the Smart Grow Room?', a: 'The Smart Grow Room is a fully climate-controlled indoor setup that allows you to grow high-value crops year-round regardless of outside weather conditions, with automated lighting, temperature, and humidity.' },
               { q: 'Can I integrate with existing systems?', a: 'Yes! Our modular hardware is designed to retrofit onto most existing irrigation lines and greenhouse sensors, making upgrades cost-effective.' },
               { q: 'How do you handle maintenance?', a: 'We provide 24/7 remote monitoring and over-the-air updates. If hardware needs physical maintenance, our team is dispatched within 48 hours for enterprise clients.' },
@@ -1261,42 +1233,42 @@ function App() {
           <div>
             <h4 className="text-white font-semibold mb-4">Product</h4>
             <ul className="space-y-2 text-sm">
-              <li>Features</li>
-              <li>Pricing</li>
-              <li>Case Studies</li>
-              <li>Reviews</li>
-              <li>Updates</li>
+              <FooterLink label="Features" onClick={() => setCurrentPage('products')} />
+              <FooterLink label="Pricing" onClick={() => setCurrentPage('products')} />
+              <FooterLink label="Case Studies" onClick={() => setCurrentPage('products')} />
+              <FooterLink label="Reviews" onClick={() => setCurrentPage('products')} />
+              <FooterLink label="Updates" onClick={() => setCurrentPage('products')} />
             </ul>
           </div>
-          
+
           <div>
             <h4 className="text-white font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-sm">
-              <li>About</li>
-              <li>Contact</li>
-              <li>Careers</li>
-              <li>Culture</li>
-              <li>Blog</li>
+              <FooterLink label="About" onClick={() => setCurrentPage('company')} />
+              <FooterLink label="Contact" onClick={openWhatsApp} />
+              <FooterLink label="Careers" onClick={() => setCurrentPage('company')} />
+              <FooterLink label="Culture" onClick={() => setCurrentPage('company')} />
+              <FooterLink label="Invest" onClick={() => setCurrentPage('invest')} />
             </ul>
           </div>
-          
+
           <div>
             <h4 className="text-white font-semibold mb-4">Support</h4>
             <ul className="space-y-2 text-sm">
-              <li>Help Center</li>
-              <li>Documentation</li>
-              <li>Community</li>
-              <li>Status</li>
+              <FooterLink label="Help Center" onClick={openWhatsApp} />
+              <FooterLink label="Contact Sales" onClick={openWhatsApp} />
+              <FooterLink label="Community" onClick={openWhatsApp} />
+              <FooterLink label="Email Us" onClick={() => window.open('mailto:safiu2543@gmail.com')} />
             </ul>
           </div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 text-sm flex flex-col md:flex-row justify-between items-center">
           <p>© 2026 Digitalized Plantation. All rights reserved.</p>
           <div className="flex gap-4 mt-4 md:mt-0">
-            <span>Terms</span>
-            <span>Privacy</span>
-            <span>Cookies</span>
+            <button onClick={() => setCurrentPage('company')} className="hover:text-white transition-colors">Terms</button>
+            <button onClick={() => setCurrentPage('company')} className="hover:text-white transition-colors">Privacy</button>
+            <button onClick={() => setCurrentPage('company')} className="hover:text-white transition-colors">Cookies</button>
           </div>
         </div>
       </footer>
