@@ -627,67 +627,83 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Safi Ullah */}
-            <div className="team-member case-study bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-              <div className="p-8">
-                <div className="text-primary-500 text-xs font-bold uppercase tracking-wider mb-3 bg-primary-500/10 inline-block px-3 py-1 rounded-full border border-primary-500/20">Founder & CEO</div>
-                <h3 className="font-bold text-2xl mb-4 text-gray-900">Safi Ullah</h3>
-                <p className="text-sm text-gray-600 mb-6 leading-relaxed">CS student at IMSciences. Designed and built the IoT germination chamber achieving 90% success. Trained 200+ students on climate solutions.</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">IoT Systems</span>
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">ESP32 & Arduino</span>
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Python & Flask</span>
+            <div className="team-member case-study bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div className="h-64 w-full bg-gray-200 overflow-hidden shrink-0">
+                <img src="/team-safi.jpg" alt="Safi Ullah" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="text-primary-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-primary-50 inline-block px-3 py-1 rounded-full border border-primary-100 max-w-max">Founder & CEO</div>
+                <h3 className="font-extrabold text-xl mb-3 text-gray-900">Safi Ullah</h3>
+                <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-1">CS student at IMSciences. Designed and built the IoT germination chamber achieving 90% success. Trained 200+ students on climate solutions.</p>
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">IoT Systems</span>
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">ESP32 & Arduino</span>
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Python & Flask</span>
                 </div>
               </div>
             </div>
 
             {/* Ronit Chowhan */}
-            <div className="team-member case-study bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-              <div className="p-8">
-                <div className="text-success-500 text-xs font-bold uppercase tracking-wider mb-3 bg-success-500/10 inline-block px-3 py-1 rounded-full border border-success-500/20">Tech Lead</div>
-                <h3 className="font-bold text-2xl mb-4 text-gray-900">Ronit Chowhan</h3>
-                <p className="text-sm text-gray-600 mb-6 leading-relaxed">Leading product development and building the core IoT architecture. Responsible for turning the vision into working technology.</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Hardware Dev</span>
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">IoT Protocols</span>
+            <div className="team-member case-study bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div className="h-64 w-full bg-gray-200 overflow-hidden shrink-0">
+                <img src="/team-ronit.jpg" alt="Ronit Chowhan" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="text-success-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-success-50 inline-block px-3 py-1 rounded-full border border-success-100 max-w-max">Tech Lead</div>
+                <h3 className="font-extrabold text-xl mb-3 text-gray-900">Ronit Chowhan</h3>
+                <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Leading product development and building the core IoT architecture. Responsible for turning the vision into working technology.</p>
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Hardware Dev</span>
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">IoT Protocols</span>
                 </div>
               </div>
             </div>
 
             {/* Ahmad Ullah */}
-            <div className="team-member case-study bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-              <div className="p-8">
-                <div className="text-success-500 text-xs font-bold uppercase tracking-wider mb-3 bg-success-500/10 inline-block px-3 py-1 rounded-full border border-success-500/20">AI Engineer</div>
-                <h3 className="font-bold text-2xl mb-4 text-gray-900">Ahmad Ullah</h3>
-                <p className="text-sm text-gray-600 mb-6 leading-relaxed">Contributing intelligent automation and machine learning capabilities to the smart agriculture system.</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Machine Learning</span>
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Python Integration</span>
+            <div className="team-member case-study bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div className="h-64 w-full bg-gray-200 overflow-hidden shrink-0">
+                <img src="/team-ahmad.jpg" alt="Ahmad Ullah" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="text-success-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-success-50 inline-block px-3 py-1 rounded-full border border-success-100 max-w-max">AI Engineer</div>
+                <h3 className="font-extrabold text-xl mb-3 text-gray-900">Ahmad Ullah</h3>
+                <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Contributing intelligent automation and machine learning capabilities to the smart agriculture system.</p>
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Machine Learning</span>
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Python Integration</span>
                 </div>
               </div>
             </div>
 
             {/* Bisma Sami */}
-            <div className="team-member case-study bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-              <div className="p-8">
-                <div className="text-primary-500 text-xs font-bold uppercase tracking-wider mb-3 bg-primary-500/10 inline-block px-3 py-1 rounded-full border border-primary-500/20">Research Lead</div>
-                <h3 className="font-bold text-2xl mb-4 text-gray-900">Bisma Sami</h3>
-                <p className="text-sm text-gray-600 mb-6 leading-relaxed">Leading market research and strategic planning. Future focus on software development for the platform.</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Market Research</span>
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Strategy</span>
+            <div className="team-member case-study bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div className="h-64 w-full bg-gray-200 overflow-hidden shrink-0">
+                <img src="/team-bisma.jpg" alt="Bisma Sami" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="text-primary-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-primary-50 inline-block px-3 py-1 rounded-full border border-primary-100 max-w-max">Research Lead</div>
+                <h3 className="font-extrabold text-xl mb-3 text-gray-900">Bisma Sami</h3>
+                <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Leading market research and strategic planning. Future focus on software development for the platform.</p>
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Market Research</span>
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Strategy</span>
                 </div>
               </div>
             </div>
 
             {/* Fahad Nasar */}
-            <div className="team-member case-study bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-              <div className="p-8">
-                <div className="text-success-500 text-xs font-bold uppercase tracking-wider mb-3 bg-success-500/10 inline-block px-3 py-1 rounded-full border border-success-500/20">Marketing Lead</div>
-                <h3 className="font-bold text-2xl mb-4 text-gray-900">Fahad Nasar</h3>
-                <p className="text-sm text-gray-600 mb-6 leading-relaxed">Driving the marketing strategy and brand awareness. CS background brings a tech-forward approach to growth.</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Digital Marketing</span>
-                  <span className="text-[10px] font-bold bg-white px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 shadow-sm">Brand Strategy</span>
+            <div className="team-member case-study bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col lg:col-span-2 xl:col-span-1">
+              <div className="h-64 w-full bg-gray-200 overflow-hidden shrink-0">
+                <img src="/team-fahad.jpg" alt="Fahad Nasar" className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="text-success-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-success-50 inline-block px-3 py-1 rounded-full border border-success-100 max-w-max">Marketing Lead</div>
+                <h3 className="font-extrabold text-xl mb-3 text-gray-900">Fahad Nasar</h3>
+                <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Driving the marketing strategy and brand awareness. CS background brings a tech-forward approach to growth.</p>
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Digital Marketing</span>
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">Brand Strategy</span>
+                  <span className="text-[10px] font-bold bg-gray-50 px-2.5 py-1.5 rounded-lg text-gray-600 border border-gray-100">CS</span>
                 </div>
               </div>
             </div>
