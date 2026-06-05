@@ -751,7 +751,7 @@ const ComingSoonPage = ({ onNavigate }: { onNavigate: (page: string) => void }) 
       <div className="flex-1 flex flex-col items-center justify-center pt-24 pb-16 px-6 relative overflow-hidden bg-gray-50/50">
         <div className="max-w-4xl w-full z-10 text-center flex flex-col items-center">
           <div className="inline-block px-4 py-2 bg-primary-50 text-primary-600 rounded-full text-sm font-bold mb-6 border border-primary-100 shadow-sm">
-            Coming Soon 🚀
+            Coming Soon
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight max-w-3xl">
             The Hub for Your Plantation
