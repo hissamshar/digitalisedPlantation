@@ -606,7 +606,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
                 We aren't just building software; we are building physical, tangible resilience for our food supply. Whether you're a home gardener or a commercial farmer, we invite you to join us in digitalizing the plantation.
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary-500/10 rounded-full flex items-center justify-center text-primary-600 font-bold text-xl">SU</div>
+                <img src="/team-safi.jpg" alt="Safi Ullah" className="w-12 h-12 rounded-full object-cover object-top shadow-sm border border-gray-100" />
                 <div>
                   <div className="font-bold text-gray-900">Safi Ullah</div>
                   <div className="text-sm text-primary-600 font-medium">Founder & CEO</div>
