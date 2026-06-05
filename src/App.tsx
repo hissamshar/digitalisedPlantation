@@ -2,11 +2,6 @@ import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, Check, Menu, X, 
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import VideoScrubber from './VideoScrubber';
-
-// Hyperreal cinematic that scroll drives. Swap this file with your AI/offline
-// render (re-encode all-intra) to change the footage — no code change needed.
-const SCRUB_VIDEO = '/showcase.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -749,10 +744,8 @@ function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
-  // Hardware showcase: pinned section + scroll-driven scrub progress.
+  // Hardware showcase section (scroll-revealed cards).
   const showcaseRef = useRef<HTMLDivElement>(null);
-  const sceneProgress = useRef(0);                  // 0..1, written by GSAP, read by the scrubber
-  const [sceneActive, setSceneActive] = useState(false); // gates the scrub loop to when visible
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -772,42 +765,15 @@ function App() {
 
       // 4. Big Text Transition (Removed GSAP color tween in favor of CSS gradient spacer)
 
-      // 5. Hardware Showcase (Pinned) — scroll drives the cinematic scrub progress
-      if (showcaseRef.current) {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: showcaseRef.current,
-            start: 'top top',
-            end: '+=250%', // Scroll distance for the full scene
-            scrub: 0.6,
-            pin: true,
-            invalidateOnRefresh: true,
-            // Only run the scrub loop while the section is on screen
-            onToggle: (self) => setSceneActive(self.isActive),
-          }
-        });
-
-        // Feed normalized scroll progress straight into the 3D scene (no decode/seek lag)
-        const proxy = { progress: 0 };
-        tl.to(proxy, {
-          progress: 1,
-          duration: 1,
-          ease: 'none',
-          onUpdate: () => {
-            sceneProgress.current = proxy.progress;
-          }
-        }, 0);
-
-        // Animate text overlays
-        tl.to('.hw-text-1', { opacity: 0, y: -50, duration: 0.15 }, 0.1);
-        tl.fromTo('.hw-text-2', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.15 }, 0.2);
-        tl.to('.hw-text-2', { opacity: 0, y: -50, duration: 0.15 }, 0.4);
-        tl.fromTo('.hw-text-3', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.15 }, 0.5);
-        tl.to('.hw-text-3', { opacity: 0, y: -50, duration: 0.15 }, 0.7);
-        tl.fromTo('.hw-text-4', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.15 }, 0.8);
-      }
-
-      // 5.5 Seamless Transition OUT of Video Section (Removed GSAP color tween in favor of CSS gradient spacer)
+      // 5. Hardware Showcase — staggered reveal of the capability cards
+      gsap.fromTo('.hw-card',
+        { y: 50, opacity: 0 },
+        { scrollTrigger: { trigger: '.hardware-section', start: 'top 80%' }, y: 0, opacity: 1, stagger: 0.12, duration: 0.8, ease: 'power3.out' }
+      );
+      gsap.fromTo('.hw-heading',
+        { y: 30, opacity: 0 },
+        { scrollTrigger: { trigger: '.hardware-section', start: 'top 85%' }, y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }
+      );
 
       // 6. Features (Simplified)
       gsap.fromTo('.feature-card',
@@ -988,72 +954,47 @@ function App() {
         </div>
       </section>
 
-      {/* 5b. Hardware Showcase - Cinematic Scroll Scrub */}
-      <section ref={showcaseRef} className="relative bg-black text-white h-[100vh] overflow-hidden">
-        <div className="absolute inset-0 w-full h-full">
-          {/* Scroll-scrubbed cinematic; progress fed via sceneProgress ref */}
-          <VideoScrubber progress={sceneProgress} active={sceneActive} src={SCRUB_VIDEO} />
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-[5]"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-[5]"></div>
-          
-          {/* Hardware Text Overlays */}
-          <div className="absolute inset-0 flex items-center px-8 md:px-24 pointer-events-none z-10">
-            
-            {/* Text 1 */}
-            <div className="hw-text-1 absolute max-w-2xl">
-              <div className="inline-block px-3 py-1 bg-success-500/20 text-success-400 rounded-full text-xs font-semibold mb-6 uppercase tracking-wider backdrop-blur-sm">
-                Hardware Integration
-              </div>
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-2xl">
-                Engineered for <br />the Toughest Climates
-              </h2>
-              <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-lg drop-shadow-xl">
-                Our smart IoT control hubs are built to withstand high temperatures, monsoons, and extreme weather, combining raw electronic intelligence with botanical growth.
-              </p>
-              <div className="mt-8 text-sm text-gray-400 flex items-center gap-2">
-                <span className="inline-block animate-bounce text-white">↓</span> Scroll to explore components
-              </div>
-            </div>
+      {/* 5b. Hardware Showcase - Engineered components */}
+      <section ref={showcaseRef} className="hardware-section relative bg-black text-white py-20 lg:py-28 px-6 overflow-hidden">
+        {/* decorative ambient glows */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-success-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-warning-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-            {/* Text 2 */}
-            <div className="hw-text-2 absolute max-w-2xl opacity-0">
-              <div className="w-14 h-14 bg-success-500/20 text-success-400 rounded-xl flex items-center justify-center mb-6 backdrop-blur-sm">
-                <Cpu size={28} />
-              </div>
-              <h3 className="text-3xl md:text-5xl font-bold mb-4 drop-shadow-2xl">
-                The Neural Control Hub
-              </h3>
-              <p className="text-gray-300 text-lg leading-relaxed max-w-lg drop-shadow-xl">
-                Equipped with custom microprocessor chips, our hubs regulate irrigation grids with surgical precision. Coiled around natural vines, they blend seamlessly into the plantation canopy.
-              </p>
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Heading */}
+          <div className="hw-heading max-w-3xl mb-14 lg:mb-20">
+            <div className="inline-block px-3 py-1 bg-success-500/20 text-success-400 rounded-full text-xs font-semibold mb-6 uppercase tracking-wider backdrop-blur-sm">
+              Hardware Integration
             </div>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              Engineered for <span className="text-success-500">the Toughest Climates</span>
+            </h2>
+            <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
+              Our smart IoT hubs fuse raw electronic intelligence with botanical growth — built to withstand high temperatures, monsoons, and extreme weather.
+            </p>
+          </div>
 
-            {/* Text 3 */}
-            <div className="hw-text-3 absolute max-w-2xl opacity-0 right-8 md:right-24 text-right flex flex-col items-end">
-              <div className="w-14 h-14 bg-warning-500/20 text-warning-400 rounded-xl flex items-center justify-center mb-6 backdrop-blur-sm">
-                <Droplets size={28} />
+          {/* Capability cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: <Cpu size={26} />, label: 'Compute', title: 'Neural Control Hub', desc: 'Custom microprocessor chips regulate irrigation grids with surgical precision.', accent: 'from-success-500 to-success-700', glow: 'hover:shadow-success-500/30' },
+              { icon: <Droplets size={26} />, label: 'Sensing', title: 'Organic Smart Sensors', desc: 'Moisture, temperature and nitrogen probes embedded along the roots, reporting in real time.', accent: 'from-blue-500 to-blue-700', glow: 'hover:shadow-blue-500/30' },
+              { icon: <Zap size={26} />, label: 'Actuation', title: 'Automated Solenoid Grid', desc: 'Pulsed water releases delivered on-demand — only when the soil signals dehydration.', accent: 'from-warning-500 to-warning-600', glow: 'hover:shadow-warning-500/30' },
+              { icon: <ShieldCheck size={26} />, label: 'Durability', title: 'Climate-Hardened Build', desc: 'Weather-sealed enclosures engineered to survive monsoons and extreme heat.', accent: 'from-primary-500 to-primary-700', glow: 'hover:shadow-primary-500/30' },
+            ].map((c, i) => (
+              <div
+                key={i}
+                className={`hw-card group relative bg-white/[0.04] border border-white/10 rounded-2xl p-7 backdrop-blur-sm shadow-lg transition-all duration-300 hover:-translate-y-2 hover:bg-white/[0.07] hover:border-white/20 ${c.glow}`}
+              >
+                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${c.accent} flex items-center justify-center text-white mb-6 shadow-lg`}>
+                  {c.icon}
+                </div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">{c.label}</div>
+                <h3 className="text-xl font-bold mb-3">{c.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{c.desc}</p>
+                <div className={`absolute bottom-0 left-7 right-7 h-px bg-gradient-to-r ${c.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
               </div>
-              <h3 className="text-3xl md:text-5xl font-bold mb-4 drop-shadow-2xl">
-                Organic Smart Sensors
-              </h3>
-              <p className="text-gray-300 text-lg leading-relaxed max-w-lg drop-shadow-xl">
-                Moisture, temperature, and nitrogen probes are embedded along the roots. The cables are shielded with biodegradable plant-based outer skins that naturally merge with the roots.
-              </p>
-            </div>
-
-            {/* Text 4 */}
-            <div className="hw-text-4 absolute max-w-2xl opacity-0">
-              <div className="w-14 h-14 bg-primary-500/20 text-primary-400 rounded-xl flex items-center justify-center mb-6 backdrop-blur-sm">
-                <Zap size={28} />
-              </div>
-              <h3 className="text-3xl md:text-5xl font-bold mb-4 drop-shadow-2xl">
-                Automated Solenoid Grid
-              </h3>
-              <p className="text-gray-300 text-lg leading-relaxed max-w-lg drop-shadow-xl">
-                Pulsed water releases are delivered on-demand. Visualized in real-time, the water flows precisely down irrigation channels only when the soil signals dehydration.
-              </p>
-            </div>
-
+            ))}
           </div>
         </div>
       </section>
