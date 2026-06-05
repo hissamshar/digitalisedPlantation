@@ -1,4 +1,4 @@
-import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, Check, Menu, X, Instagram, Linkedin, Facebook, Youtube, Sprout, Mail } from 'lucide-react';
+import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, Check, Menu, X, Instagram, Linkedin, Facebook, Youtube, Sprout, Mail, Activity, ArrowRight } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -276,7 +276,7 @@ const GlobalNav = ({ currentPage, onNavigate }: { currentPage: string, onNavigat
         </div>
         
         <div className="hidden md:flex items-center gap-4 text-sm font-medium">
-          <a href="https://app.digitalisedplantation.com" target="_blank" rel="noopener noreferrer" className="hidden md:block hover:text-primary-500">Log in</a>
+          <button onClick={() => handleNav('login')} className="hidden md:block hover:text-primary-500">Log in</button>
           <button onClick={() => handleNav('invest')} className="bg-primary-500 text-white px-5 py-2 rounded font-medium hover:bg-primary-600 transition-colors">
             Get started
           </button>
@@ -297,7 +297,7 @@ const GlobalNav = ({ currentPage, onNavigate }: { currentPage: string, onNavigat
           <button onClick={() => handleNav('company')} className={`text-left font-medium ${currentPage === 'company' ? 'text-primary-500' : 'hover:text-primary-500'}`}>Company</button>
           <button onClick={() => handleNav('invest')} className={`text-left font-medium ${currentPage === 'invest' ? 'text-primary-500' : 'hover:text-primary-500'}`}>Invest</button>
           <hr className="border-gray-100 my-2" />
-          <a href="https://app.digitalisedplantation.com" target="_blank" rel="noopener noreferrer" className="font-medium hover:text-primary-500">Log in</a>
+          <button onClick={() => handleNav('login')} className="text-left font-medium hover:text-primary-500">Log in</button>
           <button onClick={() => handleNav('invest')} className="bg-primary-500 text-white px-5 py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors w-full mt-2">
             Get started
           </button>
@@ -739,6 +739,52 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
   );
 };
 
+const ComingSoonPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white text-dark-800 font-sans flex flex-col">
+      <GlobalNav currentPage="login" onNavigate={onNavigate} />
+      
+      <div className="flex-1 flex flex-col items-center justify-center pt-24 pb-16 px-6 relative overflow-hidden bg-gray-50/50">
+        <div className="max-w-4xl w-full z-10 text-center flex flex-col items-center">
+          <div className="inline-block px-4 py-2 bg-primary-50 text-primary-600 rounded-full text-sm font-bold mb-6 border border-primary-100 shadow-sm">
+            Coming Soon 🚀
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight max-w-3xl">
+            The Hub for Your Plantation
+          </h1>
+          <p className="text-xl text-gray-600 mb-12 max-w-2xl text-center">
+            You will soon be able to log in to access this powerful real-time dashboard.
+          </p>
+          
+          <div className="w-full max-w-lg mx-auto relative rounded-3xl p-1 bg-gradient-to-tr from-primary-400 to-teal-300 shadow-2xl transform hover:-translate-y-2 transition-transform duration-500">
+            <div className="relative pointer-events-none opacity-90">
+              <LiveDashboard />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center bg-dark-900/10 rounded-3xl backdrop-blur-[2px]">
+              <div className="bg-white/90 px-6 py-3 rounded-2xl shadow-lg border border-white/50 backdrop-blur-md">
+                <p className="font-bold text-dark-800 flex items-center gap-2">
+                  <Activity size={18} className="text-primary-500" />
+                  Preview Access Only
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-16 flex flex-col items-center">
+            <button onClick={() => onNavigate('home')} className="text-primary-600 font-bold hover:text-primary-700 transition-colors flex items-center gap-2">
+              <ArrowRight size={18} className="rotate-180" /> Back to Home
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -833,6 +879,9 @@ function App() {
   }
   if (currentPage === 'company') {
     return <CompanyPage onNavigate={setCurrentPage} />;
+  }
+  if (currentPage === 'login') {
+    return <ComingSoonPage onNavigate={setCurrentPage} />;
   }
 
   return (
