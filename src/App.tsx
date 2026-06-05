@@ -606,7 +606,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
                 We aren't just building software; we are building physical, tangible resilience for our food supply. Whether you're a home gardener or a commercial farmer, we invite you to join us in digitalizing the plantation.
               </p>
               <div className="flex items-center gap-4">
-                <img src="/team-safi.jpg" alt="Safi Ullah" className="w-12 h-12 rounded-full object-cover object-top shadow-sm border border-gray-100" />
+                <img src="/team-safi.webp" alt="Safi Ullah" className="w-12 h-12 rounded-full object-cover object-top shadow-sm border border-gray-100" />
                 <div>
                   <div className="font-bold text-gray-900">Safi Ullah</div>
                   <div className="text-sm text-primary-600 font-medium">Founder & CEO</div>
@@ -629,7 +629,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
             {/* Safi Ullah */}
             <div className="team-member case-study bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center p-8">
               <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 mb-6 shadow-md border-4 border-gray-50">
-                <img src="/team-safi.jpg" alt="Safi Ullah" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
+                <img src="/team-safi.webp" alt="Safi Ullah" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
               </div>
               <div className="text-primary-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-primary-50 inline-block px-3 py-1 rounded-full border border-primary-100 max-w-max">Founder & CEO</div>
               <h3 className="font-extrabold text-xl mb-3 text-gray-900">Safi Ullah</h3>
@@ -644,7 +644,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
             {/* Ronit Chowhan */}
             <div className="team-member case-study bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center p-8">
               <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 mb-6 shadow-md border-4 border-gray-50">
-                <img src="/team-ronit.jpg" alt="Ronit Chowhan" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
+                <img src="/team-ronit.webp" alt="Ronit Chowhan" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
               </div>
               <div className="text-success-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-success-50 inline-block px-3 py-1 rounded-full border border-success-100 max-w-max">Tech Lead</div>
               <h3 className="font-extrabold text-xl mb-3 text-gray-900">Ronit Chowhan</h3>
@@ -658,7 +658,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
             {/* Ahmad Ullah */}
             <div className="team-member case-study bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center p-8">
               <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 mb-6 shadow-md border-4 border-gray-50">
-                <img src="/team-ahmad.jpg" alt="Ahmad Ullah" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
+                <img src="/team-ahmad.webp" alt="Ahmad Ullah" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
               </div>
               <div className="text-success-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-success-50 inline-block px-3 py-1 rounded-full border border-success-100 max-w-max">AI Engineer</div>
               <h3 className="font-extrabold text-xl mb-3 text-gray-900">Ahmad Ullah</h3>
@@ -672,7 +672,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
             {/* Bisma Sami */}
             <div className="team-member case-study bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center p-8">
               <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 mb-6 shadow-md border-4 border-gray-50">
-                <img src="/team-bisma.jpg" alt="Bisma Sami" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
+                <img src="/team-bisma.webp" alt="Bisma Sami" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
               </div>
               <div className="text-primary-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-primary-50 inline-block px-3 py-1 rounded-full border border-primary-100 max-w-max">Research Lead</div>
               <h3 className="font-extrabold text-xl mb-3 text-gray-900">Bisma Sami</h3>
@@ -686,7 +686,7 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
             {/* Fahad Nasar */}
             <div className="team-member case-study bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center p-8 lg:col-span-2 xl:col-span-1">
               <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 mb-6 shadow-md border-4 border-gray-50">
-                <img src="/team-fahad.jpg" alt="Fahad Nasar" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
+                <img src="/team-fahad.webp" alt="Fahad Nasar" className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700" />
               </div>
               <div className="text-success-500 text-[10px] font-bold uppercase tracking-widest mb-3 bg-success-50 inline-block px-3 py-1 rounded-full border border-success-100 max-w-max">Marketing Lead</div>
               <h3 className="font-extrabold text-xl mb-3 text-gray-900">Fahad Nasar</h3>
