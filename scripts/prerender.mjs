@@ -4,48 +4,70 @@
  * bots, link-preview fetchers, AWS Activate checks) receive real content
  * instead of an empty <div id="root"></div>.
  *
- * Usage:  node scripts/prerender.mjs          (called by the "postbuild" npm script)
- * Requires: puppeteer-core (devDependency) + system Chromium
+ * When no browser is available (e.g. Vercel CI), the script exits gracefully
+ * so the build still succeeds — the static meta tags, OG tags, JSON-LD, and
+ * sitemap.xml already cover most crawler/link-preview needs.
+ *
+ * Usage:  node scripts/prerender.mjs   (called automatically by "postbuild")
+ * Requires: puppeteer-core (devDependency) + a system Chromium/Chrome
  */
 
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 import { createServer } from 'http';
 import { resolve, join, extname } from 'path';
-import puppeteer from 'puppeteer-core';
-
-// Locate system Chromium
-const CHROME_PATH = execSync(
-  'which chromium-browser || which chromium || which google-chrome-stable || which google-chrome',
-  { encoding: 'utf-8' },
-).trim();
 
 const DIST = resolve('dist');
+
+// ---------------------------------------------------------------------------
+// 1. Find a usable browser, or bail out gracefully
+// ---------------------------------------------------------------------------
+function findChrome() {
+  const candidates = [
+    'chromium-browser',
+    'chromium',
+    'google-chrome-stable',
+    'google-chrome',
+  ];
+  for (const bin of candidates) {
+    try {
+      const path = execSync(`which ${bin} 2>/dev/null`, { encoding: 'utf-8' }).trim();
+      if (path) return path;
+    } catch { /* not found, try next */ }
+  }
+  return null;
+}
+
+const CHROME_PATH = findChrome();
+
+if (!CHROME_PATH) {
+  console.log('  ⚠  No Chrome/Chromium found — skipping prerender (CI/Vercel detected).');
+  console.log('     Meta tags, OG tags, JSON-LD, robots.txt, and sitemap.xml are still present.');
+  process.exit(0);
+}
+
+console.log(`  ➜  Using browser: ${CHROME_PATH}`);
+
+// ---------------------------------------------------------------------------
+// 2. Tiny static file server for the dist folder
+// ---------------------------------------------------------------------------
 const MIME = {
-  '.html': 'text/html',
-  '.js':   'application/javascript',
-  '.css':  'text/css',
-  '.png':  'image/png',
-  '.webp': 'image/webp',
-  '.svg':  'image/svg+xml',
-  '.json': 'application/json',
-  '.xml':  'application/xml',
-  '.txt':  'text/plain',
-  '.ico':  'image/x-icon',
+  '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css',
+  '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml',
+  '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain',
+  '.ico': 'image/x-icon',
 };
 
-/** Tiny static file server for the dist folder. */
 function serve() {
   return new Promise((res) => {
     const srv = createServer((req, reply) => {
-      let filePath = join(DIST, req.url === '/' ? 'index.html' : req.url);
+      const filePath = join(DIST, req.url === '/' ? 'index.html' : req.url);
       try {
         const data = readFileSync(filePath);
-        const ext = extname(filePath);
-        reply.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+        reply.writeHead(200, { 'Content-Type': MIME[extname(filePath)] || 'application/octet-stream' });
         reply.end(data);
       } catch {
-        // SPA fallback — serve index.html for any unknown route
+        // SPA fallback
         const html = readFileSync(join(DIST, 'index.html'));
         reply.writeHead(200, { 'Content-Type': 'text/html' });
         reply.end(html);
@@ -53,41 +75,41 @@ function serve() {
     });
     srv.listen(0, () => {
       const port = srv.address().port;
-      console.log(`  ➜  Static server running at http://localhost:${port}`);
+      console.log(`  ➜  Static server on http://localhost:${port}`);
       res({ srv, port });
     });
   });
 }
 
+// ---------------------------------------------------------------------------
+// 3. Prerender
+// ---------------------------------------------------------------------------
 async function prerender() {
+  const puppeteer = await import('puppeteer-core');
   const { srv, port } = await serve();
-  const origin = `http://localhost:${port}`;
 
-  // Launch headless Chromium and render the page
-  const browser = await puppeteer.launch({
+  const browser = await puppeteer.default.launch({
     executablePath: CHROME_PATH,
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
   });
 
   const page = await browser.newPage();
-  await page.goto(origin, { waitUntil: 'networkidle0', timeout: 30_000 });
+  await page.goto(`http://localhost:${port}`, { waitUntil: 'networkidle0', timeout: 30_000 });
 
-  // Give GSAP animations a moment to settle, then grab the HTML
+  // Let GSAP animations settle
   await page.evaluate(() => new Promise(r => setTimeout(r, 1500)));
   const html = await page.content();
 
   await browser.close();
   srv.close();
 
-  // Write the pre-rendered HTML back to dist/index.html
   writeFileSync(join(DIST, 'index.html'), html, 'utf-8');
 
-  // Quick sanity check
-  const output = readFileSync(join(DIST, 'index.html'), 'utf-8');
-  const hasContent = output.includes('Digitalized Plantation') && !output.includes('<div id="root"></div>');
+  // Sanity check
+  const hasContent = html.includes('Digitalized Plantation') && !html.includes('<div id="root"></div>');
   if (hasContent) {
-    console.log('  ✅  Prerender successful — dist/index.html now contains rendered content.');
+    console.log('  ✅  Prerender successful — dist/index.html contains rendered content.');
   } else {
     console.error('  ❌  Prerender may have failed — root div appears empty.');
     process.exit(1);
