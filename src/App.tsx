@@ -276,7 +276,7 @@ const GlobalNav = ({ currentPage, onNavigate }: { currentPage: string, onNavigat
         </div>
         
         <div className="hidden md:flex items-center gap-4 text-sm font-medium">
-          <button onClick={() => handleNav('login')} className="hidden md:block hover:text-primary-500">Log in</button>
+          <button onClick={() => handleNav('login')} className="hidden md:block hover:text-primary-500">Request Access</button>
           <button onClick={() => handleNav('invest')} className="bg-primary-500 text-white px-5 py-2 rounded font-medium hover:bg-primary-600 transition-colors">
             Get started
           </button>
@@ -297,7 +297,7 @@ const GlobalNav = ({ currentPage, onNavigate }: { currentPage: string, onNavigat
           <button onClick={() => handleNav('company')} className={`text-left font-medium ${currentPage === 'company' ? 'text-primary-500' : 'hover:text-primary-500'}`}>Company</button>
           <button onClick={() => handleNav('invest')} className={`text-left font-medium ${currentPage === 'invest' ? 'text-primary-500' : 'hover:text-primary-500'}`}>Invest</button>
           <hr className="border-gray-100 my-2" />
-          <button onClick={() => handleNav('login')} className="text-left font-medium hover:text-primary-500">Log in</button>
+          <button onClick={() => handleNav('login')} className="text-left font-medium hover:text-primary-500">Request Access</button>
           <button onClick={() => handleNav('invest')} className="bg-primary-500 text-white px-5 py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors w-full mt-2">
             Get started
           </button>
