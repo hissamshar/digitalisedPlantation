@@ -18,7 +18,7 @@ const FooterLink = ({ label, onClick }: { label: string; onClick: () => void }) 
   </li>
 );
 
-const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
+const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard = false }: { deviceId?: string, isDemo?: boolean, isRealDashboard?: boolean }) => {
   const [soilMoisture, setSoilMoisture] = useState(64.5);
   const [chamberTemp, setChamberTemp] = useState(24.2);
   const [humidity, setHumidity] = useState(58.0);
@@ -30,6 +30,22 @@ const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
   const API_URL = 'https://5bl52j7egj.execute-api.us-east-1.amazonaws.com/default/GetEsp32Data'; 
 
   useEffect(() => {
+    if (isDemo) {
+      // --- MOCK DATA FOR LANDING PAGE ---
+      const interval = setInterval(() => {
+        setSoilMoisture(prev => Math.max(50, Math.min(80, Number((prev + (Math.random() - 0.5) * 2).toFixed(1)))));
+        setChamberTemp(prev => Math.max(20, Math.min(30, Number((prev + (Math.random() - 0.5)).toFixed(1)))));
+        setHumidity(prev => Math.max(40, Math.min(70, Number((prev + (Math.random() - 0.5) * 1.5).toFixed(1)))));
+        setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
+        
+        // Randomly toggle relays occasionally
+        if (Math.random() > 0.8) {
+          setRelays(r => ({ ...r, pump: Math.random() > 0.5 }));
+        }
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+
     // --- REAL DATA FETCHING (AWS) ---
     const fetchRealData = async () => {
       try {
@@ -66,13 +82,14 @@ const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
     const interval = setInterval(fetchRealData, 5000); // Then poll every 5s
 
     return () => clearInterval(interval);
-  }, [deviceId]);
+  }, [deviceId, isDemo]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-white/20 bg-gray-50 transform hover:-translate-y-2 transition-transform duration-500 perspective-1000 group">
+    <div className={`w-full mx-auto overflow-hidden bg-gray-50 border-gray-200/80 ${isRealDashboard ? 'max-w-full rounded-2xl shadow-xl border bg-white' : 'max-w-2xl rounded-xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-white/20 transform hover:-translate-y-2 transition-transform duration-500 perspective-1000 group'}`}>
       
-      {/* Browser Window Header */}
-      <div className="flex items-center px-4 py-3 bg-gray-100 border-b border-gray-200/80 backdrop-blur-md">
+      {/* Browser Window Header (Only for Demo Card) */}
+      {!isRealDashboard && (
+        <div className="flex items-center px-4 py-3 bg-gray-100 border-b border-gray-200/80 backdrop-blur-md">
         <div className="flex space-x-2">
           <div className="w-3 h-3 rounded-full bg-red-400 shadow-inner"></div>
           <div className="w-3 h-3 rounded-full bg-amber-400 shadow-inner"></div>
@@ -86,10 +103,12 @@ const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
         </div>
       </div>
 
+      )}
+
       {/* The Dashboard Content (Inside the "Screen") */}
-      <div className="w-full bg-white/90 p-5 md:p-7 relative overflow-hidden">
+      <div className={`w-full bg-white/90 p-5 md:p-7 relative overflow-hidden ${isRealDashboard ? 'min-h-[400px]' : ''}`}>
         {/* Subtle 3D Shine */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-20"></div>
+        {!isRealDashboard && <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-20"></div>}
         
         {/* Dashboard Header Layout */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-5 border-b border-gray-200/60 relative z-10">
@@ -992,7 +1011,7 @@ function App() {
               Sign Out
             </button>
           </div>
-          <LiveDashboard deviceId={loggedInDevice || 'alpha-1'} />
+          <LiveDashboard deviceId={loggedInDevice || 'alpha-1'} isDemo={false} isRealDashboard={true} />
         </div>
       </div>
     );
@@ -1031,8 +1050,8 @@ function App() {
             </div>
           </div>
           
-          <div className="relative flex justify-center lg:justify-end hero-card">
-            <LiveDashboard />
+          <div className="relative z-10 w-full flex justify-center lg:justify-end mt-12 lg:mt-0">
+            <LiveDashboard isDemo={true} isRealDashboard={false} />
           </div>
         </div>
       </section>
