@@ -24,6 +24,7 @@ const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
   const [humidity, setHumidity] = useState(58.0);
   const [co2Sequestered, setCo2Sequestered] = useState(142.8);
   const [relays, setRelays] = useState({ pump: true, fans: true, light: false });
+  const [isOffline, setIsOffline] = useState(false);
 
   // AWS API Gateway URL
   const API_URL = 'https://5bl52j7egj.execute-api.us-east-1.amazonaws.com/default/GetEsp32Data'; 
@@ -43,8 +44,19 @@ const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
         setHumidity(data.hum);
         setRelays({ pump: data.pump, fans: data.fans, light: data.light });
         
+        // Check if data is fresh (within 30 seconds)
+        // Note: IoT Rule must add `timestamp() as timestamp` for this to work.
+        if (data.timestamp) {
+          setIsOffline(Date.now() - data.timestamp > 30000);
+        } else {
+          // If the IoT rule hasn't been updated to include timestamp(), we assume offline
+          setIsOffline(true);
+        }
+
         // Co2 goes up slowly over time (stub)
-        setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
+        if (!isOffline) {
+          setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
+        }
       } catch (err) {
         console.error('Failed to fetch AWS telemetry', err);
       }
@@ -89,15 +101,22 @@ const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
               Smart Chamber {deviceId}
             </h3>
           </div>
-          {/* System Active Badge */}
-          <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white px-3 py-1.5 rounded-full font-semibold text-xs tracking-wide shadow-md shadow-emerald-500/20 border border-emerald-400/50">
-            <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
-            <span className="relative z-10">AI Automation</span>
-          </div>
+          {/* System Active / Offline Badge */}
+          {isOffline ? (
+            <div className="flex items-center gap-1.5 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1.5 rounded-full font-semibold text-xs tracking-wide shadow-md shadow-red-500/20 border border-red-400/50">
+              <span className="w-1.5 h-1.5 bg-white/60 rounded-full"></span>
+              <span className="relative z-10">DEVICE OFFLINE</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white px-3 py-1.5 rounded-full font-semibold text-xs tracking-wide shadow-md shadow-emerald-500/20 border border-emerald-400/50">
+              <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
+              <span className="relative z-10">AI Automation</span>
+            </div>
+          )}
         </div>
 
         {/* 3-Column Real-Time Metrics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 relative z-10">
+        <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 relative z-10 transition-all duration-500 ${isOffline ? 'opacity-60 grayscale saturate-50' : 'opacity-100'}`}>
           
           {/* Metric 1: Soil Moisture */}
           <div className="bg-white p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-gray-100 flex flex-col justify-between h-32 relative overflow-hidden">
@@ -147,7 +166,7 @@ const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
         </div>
 
         {/* Real-time Actuator Controls */}
-        <div className="bg-gradient-to-b from-gray-50 to-gray-100/50 p-4 rounded-xl border border-gray-200/80 shadow-inner relative z-10">
+        <div className={`bg-gradient-to-b from-gray-50 to-gray-100/50 p-4 rounded-xl border border-gray-200/80 shadow-inner relative z-10 transition-all duration-500 ${isOffline ? 'opacity-60 grayscale saturate-50' : 'opacity-100'}`}>
           <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 bg-gray-400 rounded-full shadow-sm"></span>
             Active Hardware Relays
