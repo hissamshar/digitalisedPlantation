@@ -18,23 +18,43 @@ const FooterLink = ({ label, onClick }: { label: string; onClick: () => void }) 
   </li>
 );
 
-const LiveDashboard = () => {
+const LiveDashboard = ({ deviceId = 'Alpha-1' }: { deviceId?: string }) => {
   const [soilMoisture, setSoilMoisture] = useState(64.5);
   const [chamberTemp, setChamberTemp] = useState(24.2);
+  const [humidity, setHumidity] = useState(58.0);
   const [co2Sequestered, setCo2Sequestered] = useState(142.8);
+  const [relays, setRelays] = useState({ pump: true, fans: true, light: false });
+
+  // AWS API Gateway URL
+  const API_URL = 'https://5bl52j7egj.execute-api.us-east-1.amazonaws.com/default/GetEsp32Data'; 
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Fluctuate soil moisture slightly
-      setSoilMoisture(prev => Number((prev + (Math.random() - 0.5) * 1.5).toFixed(1)));
-      // Fluctuate temperature very slightly
-      setChamberTemp(prev => Number((prev + (Math.random() - 0.5) * 0.4).toFixed(1)));
-      // CO2 only goes up
-      setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
-    }, 2500);
+    // --- REAL DATA FETCHING (AWS) ---
+    const fetchRealData = async () => {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        
+        // Ensure data is valid before updating state
+        if (!data || data.error) return;
+
+        setSoilMoisture(data.soil);
+        setChamberTemp(data.temp);
+        setHumidity(data.hum);
+        setRelays({ pump: data.pump, fans: data.fans, light: data.light });
+        
+        // Co2 goes up slowly over time (stub)
+        setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
+      } catch (err) {
+        console.error('Failed to fetch AWS telemetry', err);
+      }
+    };
+
+    fetchRealData(); // Fetch instantly on load
+    const interval = setInterval(fetchRealData, 5000); // Then poll every 5s
 
     return () => clearInterval(interval);
-  }, []);
+  }, [deviceId]);
 
   return (
     <div className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-white/20 bg-gray-50 transform hover:-translate-y-2 transition-transform duration-500 perspective-1000 group">
@@ -65,8 +85,8 @@ const LiveDashboard = () => {
             <span className="text-[10px] font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-2.5 py-1 rounded-full shadow-sm border border-primary-100/50">
               Live IoT Telemetry
             </span>
-            <h3 className="text-xl font-extrabold text-gray-900 tracking-tight mt-2 drop-shadow-sm">
-              Smart Chamber Alpha-1
+            <h3 className="text-xl font-extrabold text-gray-900 tracking-tight mt-2 drop-shadow-sm uppercase">
+              Smart Chamber {deviceId}
             </h3>
           </div>
           {/* System Active Badge */}
@@ -105,7 +125,7 @@ const LiveDashboard = () => {
             </div>
             <div>
               <div className="text-3xl font-extrabold text-gray-900 tracking-tight transition-all duration-300">{chamberTemp}°C</div>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mt-1">Humidity: 58%</p>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mt-1">Humidity: {humidity}%</p>
             </div>
           </div>
 
@@ -135,29 +155,29 @@ const LiveDashboard = () => {
           <div className="flex flex-wrap gap-2.5">
             
             {/* Irrigation Pump Relay Block */}
-            <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] hover:shadow-md transition-shadow">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
+            <div className={`flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] transition-shadow ${!relays.pump && 'opacity-75'}`}>
+              <div className={`w-2 h-2 rounded-full ${relays.pump ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse' : 'bg-gray-300'}`}></div>
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
-                <p className="text-xs font-extrabold text-gray-800">RUNNING</p>
+                <p className="text-xs font-extrabold text-gray-800">{relays.pump ? 'RUNNING' : 'IDLE'}</p>
               </div>
             </div>
 
             {/* Ventilation Fan Relay Block */}
-            <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] hover:shadow-md transition-shadow">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
+            <div className={`flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] transition-shadow ${!relays.fans && 'opacity-75'}`}>
+              <div className={`w-2 h-2 rounded-full ${relays.fans ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse' : 'bg-gray-300'}`}></div>
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
-                <p className="text-xs font-extrabold text-gray-800">ON (Auto)</p>
+                <p className="text-xs font-extrabold text-gray-800">{relays.fans ? 'ON (Auto)' : 'OFF'}</p>
               </div>
             </div>
 
             {/* Growth Light Relay Block */}
-            <div className="flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] opacity-75">
-              <div className="w-2 h-2 rounded-full bg-amber-500/40"></div>
+            <div className={`flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] transition-shadow ${!relays.light && 'opacity-75'}`}>
+              <div className={`w-2 h-2 rounded-full ${relays.light ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'bg-amber-500/40'}`}></div>
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Growth Light</p>
-                <p className="text-xs font-extrabold text-gray-500">NIGHT</p>
+                <p className="text-xs font-extrabold text-gray-500">{relays.light ? 'DAY' : 'NIGHT'}</p>
               </div>
             </div>
 
@@ -745,45 +765,81 @@ const CompanyPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => 
   );
 };
 
-const ComingSoonPage = ({ onNavigate }: { onNavigate: (page: string) => void }) => {
+const LoginPage = ({ onNavigate, onLogin }: { onNavigate: (page: string) => void, onLogin: (deviceId: string) => void }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    // This simulates an API login via AWS Cognito.
+    // In production, you would authenticate, get the JWT token, and extract the user's custom:deviceId.
+    setTimeout(() => {
+      setIsLoading(false);
+      // Let's pretend the user logs in and their hardware ID is 'alpha-1'
+      onLogin('alpha-1'); 
+    }, 1200);
+  };
+
   return (
-    <div className="min-h-screen bg-white text-dark-800 font-sans flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col font-sans">
       <GlobalNav currentPage="login" onNavigate={onNavigate} />
       
-      <div className="flex-1 flex flex-col items-center justify-center pt-24 pb-16 px-6 relative overflow-hidden bg-gray-50/50">
-        <div className="max-w-4xl w-full z-10 text-center flex flex-col items-center">
-          <div className="inline-block px-4 py-2 bg-primary-50 text-primary-600 rounded-full text-sm font-bold mb-6 border border-primary-100 shadow-sm">
-            Coming Soon
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight max-w-3xl">
-            The Hub for Your Plantation
-          </h1>
-          <p className="text-xl text-gray-600 mb-12 max-w-2xl text-center">
-            You will soon be able to log in to access this powerful real-time dashboard.
-          </p>
-          
-          <div className="w-full max-w-lg mx-auto relative rounded-3xl p-1 bg-gradient-to-tr from-primary-400 to-teal-300 shadow-2xl transform hover:-translate-y-2 transition-transform duration-500">
-            <div className="relative pointer-events-none opacity-90">
-              <LiveDashboard />
+      <div className="flex-1 flex items-center justify-center p-6 relative overflow-hidden bg-gray-50/50">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-100 rounded-full blur-[100px] opacity-40 translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
+        
+        <div className="w-full max-w-md bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-gray-100 relative z-10">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-primary-50 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-primary-100 shadow-sm">
+              <Activity size={32} />
             </div>
-            <div className="absolute inset-0 flex items-center justify-center bg-dark-900/10 rounded-3xl backdrop-blur-[2px]">
-              <div className="bg-white/90 px-6 py-3 rounded-2xl shadow-lg border border-white/50 backdrop-blur-md">
-                <p className="font-bold text-dark-800 flex items-center gap-2">
-                  <Activity size={18} className="text-primary-500" />
-                  Preview Access Only
-                </p>
-              </div>
-            </div>
+            <h2 className="text-2xl font-extrabold text-gray-900">Sign in to Dashboard</h2>
+            <p className="text-sm text-gray-500 mt-2">Manage your smart plantation hardware.</p>
           </div>
 
-          <div className="mt-16 flex flex-col items-center">
-            <button onClick={() => onNavigate('home')} className="text-primary-600 font-bold hover:text-primary-700 transition-colors flex items-center gap-2">
-              <ArrowRight size={18} className="rotate-180" /> Back to Home
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Email address</label>
+              <input 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-gray-800"
+                placeholder="farmer@example.com"
+                required 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Password</label>
+              <input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-gray-800"
+                placeholder="••••••••"
+                required 
+              />
+            </div>
+            <button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full py-3.5 bg-primary-500 text-white rounded-xl font-bold hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/30 flex justify-center items-center h-[52px]"
+            >
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                'Sign In'
+              )}
             </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
+            Don't have hardware yet? <button onClick={() => onNavigate('invest')} className="text-primary-600 font-bold hover:underline">Get a Smart Chamber</button>
           </div>
         </div>
       </div>
@@ -793,6 +849,7 @@ const ComingSoonPage = ({ onNavigate }: { onNavigate: (page: string) => void }) 
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [loggedInDevice, setLoggedInDevice] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
@@ -887,7 +944,39 @@ function App() {
     return <CompanyPage onNavigate={setCurrentPage} />;
   }
   if (currentPage === 'login') {
-    return <ComingSoonPage onNavigate={setCurrentPage} />;
+    return <LoginPage 
+      onNavigate={setCurrentPage} 
+      onLogin={(device) => {
+        setLoggedInDevice(device);
+        setCurrentPage('dashboard');
+      }} 
+    />;
+  }
+
+  if (currentPage === 'dashboard') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+        <GlobalNav currentPage="dashboard" onNavigate={setCurrentPage} />
+        <div className="flex-1 max-w-4xl w-full mx-auto px-6 py-12">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+            <div>
+              <h1 className="text-3xl font-extrabold text-gray-900">Your Plantation</h1>
+              <p className="text-gray-500 font-medium mt-1">Managing device: <span className="text-primary-600 font-bold uppercase">{loggedInDevice}</span></p>
+            </div>
+            <button 
+              onClick={() => {
+                setLoggedInDevice(null);
+                setCurrentPage('home');
+              }}
+              className="text-sm font-bold bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-50 hover:text-red-500 transition-colors shadow-sm"
+            >
+              Sign Out
+            </button>
+          </div>
+          <LiveDashboard deviceId={loggedInDevice || 'alpha-1'} />
+        </div>
+      </div>
+    );
   }
 
   return (
