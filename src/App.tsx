@@ -1,4 +1,4 @@
-import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, Check, Menu, X, Instagram, Linkedin, Facebook, Youtube, Sprout, Mail, Activity, ArrowRight } from 'lucide-react';
+import { Cpu, Zap, Droplets, CloudRain, ShieldCheck, BarChart3, Check, Menu, X, Instagram, Linkedin, Facebook, Youtube, Sprout, Mail, Activity } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
