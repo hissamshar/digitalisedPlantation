@@ -1,0 +1,74 @@
+# Digitalized Plantation
+
+> Digitalized Plantation is an AgriTech startup, incubated at Pakistan's National Incubation Center (NIC), building IoT-powered indoor growth chambers with AI-driven climate control, automated irrigation, UV light control, and real-time environmental monitoring. Its working prototype achieved a 90%+ germination success rate, making controlled-environment agriculture climate-resilient, scalable, and data-driven for Pakistan and beyond.
+
+## About
+
+- **Founded:** 2024
+- **Founder & CEO:** Safi Ullah (CS student at IMSciences, IoT Systems Architect)
+- **Status:** Incubated at the National Incubation Center (NIC), Pakistan
+- **Website:** https://digitalizedplantation.garden
+- **Contact:** safiu2543@gmail.com · WhatsApp +92 319 2291320
+- **YouTube:** https://www.youtube.com/@DIGITALIZEDPLANTATION
+
+## What It Does
+
+Digitalized Plantation automates plant growth inside controlled environments using IoT hardware and embedded intelligence. A closed-loop system continuously monitors temperature, humidity, soil moisture, and light intensity, then autonomously triggers irrigation pumps, UV grow-lights, and climate-regulation fans to keep plants in their optimal growth window — without manual intervention.
+
+A side-by-side prototype (an IoT-monitored chamber vs. an unmonitored control) demonstrates visibly taller, denser growth in the monitored unit, validating the approach.
+
+## System Features
+
+- **Smart Monitoring** — Multi-sensor arrays track all environmental parameters in real time.
+- **Automated Irrigation** — Precision pumps trigger only when soil moisture drops below threshold.
+- **UV Light Control** — Automated grow-light cycles calibrated per growth stage.
+- **Climate Regulation** — Fans and heating elements maintain the ideal microclimate automatically.
+- **IoT Connectivity** — ESP32 WiFi enables remote monitoring and over-the-air updates.
+- **Alert System** — Instant alerts when any parameter deviates from safe thresholds.
+
+## Technology Stack
+
+- **Microcontrollers:** ESP32 (WiFi IoT), Arduino Uno (sensor control)
+- **Sensors:** DHT11 (temperature & humidity), soil moisture sensor, LDR (light intensity)
+- **Actuators:** Relay modules, water pump (precision irrigation), UV full-spectrum grow lights, fans
+- **Backend & Dashboard:** Python, Flask, PostgreSQL
+- **Live dashboard:** Real-time control panel showing temperature, humidity, soil moisture, and light intensity
+
+## How It Works
+
+1. Sensors (DHT11, soil moisture, LDR, temperature) sample continuously.
+2. ESP32 and Arduino ingest readings and compare against optimal thresholds.
+3. Embedded decision logic evaluates parameters and queues corrective actions.
+4. Relay modules switch on pumps, UV lights, or fans as needed.
+5. The regulated environment achieves 90%+ germination success.
+
+## Key Pages
+
+- [Home](https://digitalizedplantation.garden/): Overview of the smart agriculture system and live demo.
+- [Project](https://digitalizedplantation.garden/products): How the IoT germination chambers work, the technology stack, and proven results.
+- [Company / Team](https://digitalizedplantation.garden/company): The multidisciplinary team building the platform.
+- [Invest / Partner](https://digitalizedplantation.garden/invest): Investment opportunities and custom smart-chamber builds.
+
+## Team
+
+- **Safi Ullah** — Founder & CEO, IoT Systems Architect
+- **Ronit Chowhan** — Tech Lead, Product Developer
+- **Ahmad Ullah** — AI Engineer, ML & Intelligent Automation
+- **Bisma Sami** — Research Lead, R&D and Strategy
+- **Fahad Nasar** — Marketing Lead
+
+## Achievements
+
+- 90% germination success rate in prototype testing
+- 200+ IT and medical students trained on climate change and digital solutions
+- Incubated at the National Incubation Center (NIC)
+- Participant in the PYLI WASH Youth-Led Action Program
+
+## Opportunities
+
+- **Investment:** Actively seeking investors and incubation partners. Live prototype, proven results, and a clear roadmap toward indoor farms and a SaaS platform.
+- **Custom Chambers:** Designs and builds custom IoT-powered growth chambers for homes, offices, schools, and farms — with full sensor integration, automated irrigation, UV lighting, and phone-based remote monitoring.
+
+## Keywords
+
+smart agriculture, AgriTech Pakistan, IoT growth chamber, controlled environment agriculture, indoor farming, automated irrigation, ESP32, Arduino, precision agriculture, germination chamber, climate-resilient farming, food security, carbon tracking, vertical farming, National Incubation Center
