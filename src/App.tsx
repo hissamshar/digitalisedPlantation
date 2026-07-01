@@ -16,18 +16,52 @@ const FooterLink = ({ label, onClick }: { label: string; onClick: () => void }) 
       {label}
     </button>
   </li>
-);
-
-const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard = false }: { deviceId?: string, isDemo?: boolean, isRealDashboard?: boolean }) => {
+);const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard = false }: { deviceId?: string, isDemo?: boolean, isRealDashboard?: boolean }) => {
   const [soilMoisture, setSoilMoisture] = useState(64.5);
   const [chamberTemp, setChamberTemp] = useState(24.2);
   const [humidity, setHumidity] = useState(58.0);
-  const [co2Sequestered, setCo2Sequestered] = useState(142.8);
   const [relays, setRelays] = useState({ pump: true, fans: true, light: false });
+  const [relayModes, setRelayModes] = useState({ pump: 'auto', fans: 'auto', light: 'auto' });
   const [isOffline, setIsOffline] = useState(false);
+  const [isSendingCmd, setIsSendingCmd] = useState<string | null>(null);
 
   // AWS API Gateway URL
   const API_URL = 'https://5bl52j7egj.execute-api.us-east-1.amazonaws.com/default/GetEsp32Data'; 
+  const COMMAND_API_URL = 'https://5bl52j7egj.execute-api.us-east-1.amazonaws.com/default/SendCommand';
+
+  const handleCommand = async (relay: 'pump' | 'fans' | 'light', mode: 'auto' | 'on' | 'off') => {
+    if (isDemo) {
+      setRelayModes(prev => ({ ...prev, [relay]: mode }));
+      if (relay === 'pump') {
+        setRelays(prev => ({ ...prev, pump: mode === 'on' }));
+      } else if (relay === 'fans') {
+        setRelays(prev => ({ ...prev, fans: mode === 'on' }));
+      } else if (relay === 'light') {
+        setRelays(prev => ({ ...prev, light: mode === 'on' }));
+      }
+      return;
+    }
+
+    const cmdKey = `${relay}-${mode}`;
+    setIsSendingCmd(cmdKey);
+    // Optimistic UI update
+    setRelayModes(prev => ({ ...prev, [relay]: mode }));
+
+    try {
+      const res = await fetch(COMMAND_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ relay, mode }),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to send command');
+      }
+    } catch (err) {
+      console.error('Error sending command:', err);
+    } finally {
+      setIsSendingCmd(null);
+    }
+  };
 
   useEffect(() => {
     if (isDemo) {
@@ -36,8 +70,6 @@ const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard =
         setSoilMoisture(prev => Math.max(50, Math.min(80, Number((prev + (Math.random() - 0.5) * 2).toFixed(1)))));
         setChamberTemp(prev => Math.max(20, Math.min(30, Number((prev + (Math.random() - 0.5)).toFixed(1)))));
         setHumidity(prev => Math.max(40, Math.min(70, Number((prev + (Math.random() - 0.5) * 1.5).toFixed(1)))));
-        setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
-        
         // Randomly toggle relays occasionally
         if (Math.random() > 0.8) {
           setRelays(r => ({ ...r, pump: Math.random() > 0.5 }));
@@ -60,18 +92,20 @@ const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard =
         setHumidity(data.hum);
         setRelays({ pump: data.pump, fans: data.fans, light: data.light });
         
+        // Update relay modes from telemetry response
+        setRelayModes({
+          pump: data.pumpMode || 'auto',
+          fans: data.fanMode || 'auto',
+          light: data.lightMode || 'auto'
+        });
+
         // Check if data is fresh (within 30 seconds)
         // Note: IoT Rule must add `timestamp() as timestamp` for this to work.
         if (data.timestamp) {
-          setIsOffline(Date.now() - data.timestamp > 30000);
+          setIsOffline(Date.now() - data.timestamp > 120000);
         } else {
           // If the IoT rule hasn't been updated to include timestamp(), we assume offline
           setIsOffline(true);
-        }
-
-        // Co2 goes up slowly over time (stub)
-        if (!isOffline) {
-          setCo2Sequestered(prev => Number((prev + Math.random() * 0.2).toFixed(1)));
         }
       } catch (err) {
         console.error('Failed to fetch AWS telemetry', err);
@@ -90,19 +124,18 @@ const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard =
       {/* Browser Window Header (Only for Demo Card) */}
       {!isRealDashboard && (
         <div className="flex items-center px-4 py-3 bg-gray-100 border-b border-gray-200/80 backdrop-blur-md">
-        <div className="flex space-x-2">
-          <div className="w-3 h-3 rounded-full bg-red-400 shadow-inner"></div>
-          <div className="w-3 h-3 rounded-full bg-amber-400 shadow-inner"></div>
-          <div className="w-3 h-3 rounded-full bg-green-400 shadow-inner"></div>
-        </div>
-        <div className="mx-auto flex-1 max-w-[200px] sm:max-w-xs flex justify-center ml-4 sm:ml-auto">
-          <div className="bg-white text-gray-400 text-[10px] font-medium px-3 py-1 rounded-md border border-gray-200/80 shadow-sm w-full text-center truncate flex items-center justify-center gap-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            digitalizedplantation.garden
+          <div className="flex space-x-2">
+            <div className="w-3 h-3 rounded-full bg-red-400 shadow-inner"></div>
+            <div className="w-3 h-3 rounded-full bg-amber-400 shadow-inner"></div>
+            <div className="w-3 h-3 rounded-full bg-green-400 shadow-inner"></div>
+          </div>
+          <div className="mx-auto flex-1 max-w-[200px] sm:max-w-xs flex justify-center ml-4 sm:ml-auto">
+            <div className="bg-white text-gray-400 text-[10px] font-medium px-3 py-1 rounded-md border border-gray-200/80 shadow-sm w-full text-center truncate flex items-center justify-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              digitalizedplantation.garden
+            </div>
           </div>
         </div>
-      </div>
-
       )}
 
       {/* The Dashboard Content (Inside the "Screen") */}
@@ -134,8 +167,8 @@ const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard =
           )}
         </div>
 
-        {/* 3-Column Real-Time Metrics Grid */}
-        <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 relative z-10 transition-all duration-500 ${isOffline ? 'opacity-60 grayscale saturate-50' : 'opacity-100'}`}>
+        {/* 2-Column Real-Time Metrics Grid */}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 relative z-10 transition-all duration-500 ${isOffline ? 'opacity-60 grayscale saturate-50' : 'opacity-100'}`}>
           
           {/* Metric 1: Soil Moisture */}
           <div className="bg-white p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-gray-100 flex flex-col justify-between h-32 relative overflow-hidden">
@@ -148,7 +181,7 @@ const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard =
             <div>
               <div className="text-3xl font-extrabold text-gray-900 tracking-tight transition-all duration-300">{soilMoisture}%</div>
               <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide mt-1 flex items-center gap-1">
-                <span className="w-1 h-1 bg-emerald-500 rounded-full inline-block"></span> Optimal
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block"></span> Optimal
               </p>
             </div>
           </div>
@@ -167,56 +200,122 @@ const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard =
             </div>
           </div>
 
-          {/* Metric 3: AI Carbon Sequestration Counter */}
-          <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm border border-emerald-400 flex flex-col justify-between h-32 relative overflow-hidden">
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-            <div className="flex justify-between items-start relative z-10">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-100 drop-shadow-sm">CO₂ Captured</span>
-              <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/30 shadow-inner">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m12 8-4 4h8z"/></svg>
-              </div>
-            </div>
-            <div className="relative z-10">
-              <div className="text-3xl font-extrabold text-white tracking-tight drop-shadow-sm transition-all duration-300">{co2Sequestered} kg</div>
-              <p className="text-[10px] font-bold text-emerald-100 uppercase tracking-wide mt-1 drop-shadow-sm">Net Positive</p>
-            </div>
-          </div>
-
         </div>
 
         {/* Real-time Actuator Controls */}
         <div className={`bg-gradient-to-b from-gray-50 to-gray-100/50 p-4 rounded-xl border border-gray-200/80 shadow-inner relative z-10 transition-all duration-500 ${isOffline ? 'opacity-60 grayscale saturate-50' : 'opacity-100'}`}>
           <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 bg-gray-400 rounded-full shadow-sm"></span>
-            Active Hardware Relays
+            Active Hardware Relays {isRealDashboard && '(Overrides Enabled)'}
           </h4>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-col md:flex-row gap-4">
             
             {/* Irrigation Pump Relay Block */}
-            <div className={`flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] transition-shadow ${!relays.pump && 'opacity-75'}`}>
-              <div className={`w-2 h-2 rounded-full ${relays.pump ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse' : 'bg-gray-300'}`}></div>
-              <div>
-                <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
-                <p className="text-xs font-extrabold text-gray-800">{relays.pump ? 'RUNNING' : 'IDLE'}</p>
+            <div className={`flex flex-col bg-white p-3.5 rounded-xl border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 transition-shadow ${!relays.pump && 'opacity-75'}`}>
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className={`w-2.5 h-2.5 rounded-full ${relays.pump ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse' : 'bg-gray-300'}`}></div>
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Water Pump</p>
+                  <p className="text-xs font-extrabold text-gray-800">{relays.pump ? 'RUNNING' : 'IDLE'}</p>
+                </div>
               </div>
+              {isRealDashboard && (
+                <div className="flex bg-gray-100 p-0.5 rounded-lg border border-gray-200 mt-2 text-[10px] font-bold w-full">
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('pump', 'auto')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.pump === 'auto' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    AUTO
+                  </button>
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('pump', 'on')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.pump === 'on' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    ON
+                  </button>
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('pump', 'off')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.pump === 'off' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    OFF
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Ventilation Fan Relay Block */}
-            <div className={`flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] transition-shadow ${!relays.fans && 'opacity-75'}`}>
-              <div className={`w-2 h-2 rounded-full ${relays.fans ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse' : 'bg-gray-300'}`}></div>
-              <div>
-                <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
-                <p className="text-xs font-extrabold text-gray-800">{relays.fans ? 'ON (Auto)' : 'OFF'}</p>
+            <div className={`flex flex-col bg-white p-3.5 rounded-xl border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 transition-shadow ${!relays.fans && 'opacity-75'}`}>
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className={`w-2.5 h-2.5 rounded-full ${relays.fans ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse' : 'bg-gray-300'}`}></div>
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Exhaust Fans</p>
+                  <p className="text-xs font-extrabold text-gray-800">{relayModes.fans === 'auto' ? (relays.fans ? 'ON (Auto)' : 'OFF') : (relays.fans ? 'ON (Manual)' : 'OFF (Manual)')}</p>
+                </div>
               </div>
+              {isRealDashboard && (
+                <div className="flex bg-gray-100 p-0.5 rounded-lg border border-gray-200 mt-2 text-[10px] font-bold w-full">
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('fans', 'auto')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.fans === 'auto' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    AUTO
+                  </button>
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('fans', 'on')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.fans === 'on' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    ON
+                  </button>
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('fans', 'off')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.fans === 'off' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    OFF
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Growth Light Relay Block */}
-            <div className={`flex items-center gap-2.5 bg-white px-3 py-2.5 rounded-lg border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 min-w-[120px] transition-shadow ${!relays.light && 'opacity-75'}`}>
-              <div className={`w-2 h-2 rounded-full ${relays.light ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'bg-amber-500/40'}`}></div>
-              <div>
-                <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Growth Light</p>
-                <p className="text-xs font-extrabold text-gray-500">{relays.light ? 'DAY' : 'NIGHT'}</p>
+            <div className={`flex flex-col bg-white p-3.5 rounded-xl border border-gray-200 shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex-1 transition-shadow ${!relays.light && 'opacity-75'}`}>
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className={`w-2.5 h-2.5 rounded-full ${relays.light ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'bg-amber-500/40'}`}></div>
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Growth Light</p>
+                  <p className="text-xs font-extrabold text-gray-800">{relayModes.light === 'auto' ? (relays.light ? 'DAY' : 'NIGHT') : (relays.light ? 'ON (Manual)' : 'OFF (Manual)')}</p>
+                </div>
               </div>
+              {isRealDashboard && (
+                <div className="flex bg-gray-100 p-0.5 rounded-lg border border-gray-200 mt-2 text-[10px] font-bold w-full">
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('light', 'auto')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.light === 'auto' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    AUTO
+                  </button>
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('light', 'on')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.light === 'on' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    ON
+                  </button>
+                  <button 
+                    disabled={isSendingCmd !== null}
+                    onClick={() => handleCommand('light', 'off')}
+                    className={`flex-1 py-1.5 rounded-md transition-all ${relayModes.light === 'off' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                  >
+                    OFF
+                  </button>
+                </div>
+              )}
             </div>
 
           </div>
@@ -226,6 +325,7 @@ const LiveDashboard = ({ deviceId = 'Alpha-1', isDemo = false, isRealDashboard =
     </div>
   );
 };
+
 
 const LiveAnalyticsCard = () => {
   const [barHeights, setBarHeights] = useState([35, 55, 75, 100]);
